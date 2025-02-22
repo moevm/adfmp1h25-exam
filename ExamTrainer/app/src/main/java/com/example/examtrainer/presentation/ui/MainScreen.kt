@@ -113,7 +113,7 @@ fun MainScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(30.dp, Alignment.CenterVertically)
+            verticalArrangement = Arrangement.spacedBy(50.dp, Alignment.CenterVertically)
         ) {
             StatisticWidget(
                 onClick = { navController.navigate("StartTestScreen") {
