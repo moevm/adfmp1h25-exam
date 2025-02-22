@@ -1,6 +1,7 @@
 package com.example.examtrainer.presentation.ui
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -159,6 +160,8 @@ fun MainScreen(navController: NavController) {
 
                 // Выпадающее меню
                 DropdownMenu(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background),
                     expanded = isDropdownExpanded,
                     onDismissRequest = { isDropdownExpanded = false }
                 ) {
