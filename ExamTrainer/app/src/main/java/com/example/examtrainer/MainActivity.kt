@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.compose.ExamTrainerTheme
-import com.example.examtrainer.presentation.ui.MainScreen
 import com.example.examtrainer.presentation.navigation.NavGraph
 
 

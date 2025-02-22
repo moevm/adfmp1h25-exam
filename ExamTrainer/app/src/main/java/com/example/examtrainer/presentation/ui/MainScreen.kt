@@ -26,17 +26,20 @@ import com.example.examtrainer.presentation.viewmodel.MainScreenViewModel
 import androidx.navigation.NavController
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.ChecklistRtl
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.NotificationImportant
+import androidx.compose.material.icons.filled.School
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.example.examtrainer.domain.model.Exam
 
 
 @Composable
-fun TrainTypeButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier ) {
+fun TrainTypeButton(text: String, firstIcon: ImageVector, onClick: () -> Unit, modifier: Modifier = Modifier ) {
     Button(
         onClick = onClick,
         modifier = modifier
@@ -54,6 +57,13 @@ fun TrainTypeButton(text: String, onClick: () -> Unit, modifier: Modifier = Modi
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Icon(
+                imageVector = firstIcon,
+                contentDescription = "Иконка",
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(end = 15.dp)
+            )
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
@@ -170,6 +180,7 @@ fun MainScreen(navController: NavController) {
             }
 
                 TrainTypeButton(
+                    firstIcon = Icons.Filled.AutoStories,
                     onClick = {
                         navController.navigate("StartTestScreen") {
                             launchSingleTop = true
@@ -179,6 +190,7 @@ fun MainScreen(navController: NavController) {
                 )
 
                 TrainTypeButton(
+                    firstIcon = Icons.Filled.NotificationImportant,
                     onClick = {
                         navController.navigate("StartTestScreen") {
                             launchSingleTop = true
@@ -188,6 +200,7 @@ fun MainScreen(navController: NavController) {
                 )
 
                 TrainTypeButton(
+                    firstIcon = Icons.Filled.School,
                     onClick = {
                         navController.navigate("StartTestScreen") {
                             launchSingleTop = true
@@ -197,6 +210,7 @@ fun MainScreen(navController: NavController) {
                 )
 
                 TrainTypeButton(
+                    firstIcon = Icons.Filled.ChecklistRtl,
                     onClick = {
                         navController.navigate("StartTestScreen") {
                             launchSingleTop = true
