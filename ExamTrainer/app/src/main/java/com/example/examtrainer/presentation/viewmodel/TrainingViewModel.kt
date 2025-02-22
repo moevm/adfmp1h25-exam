@@ -1,6 +1,5 @@
 package com.example.examtrainer.presentation.viewmodel
 
-import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.examtrainer.domain.model.Question
