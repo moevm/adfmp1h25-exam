@@ -106,7 +106,7 @@ fun MainScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .windowInsetsPadding(WindowInsets.navigationBars),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -116,7 +116,7 @@ fun MainScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(50.dp, Alignment.CenterVertically)
         ) {
             StatisticWidget(
-                onClick = { navController.navigate("StartTestScreen") {
+                onClick = { navController.navigate("training") {
                     launchSingleTop = true
                 } }
             )
@@ -160,6 +160,8 @@ fun MainScreen(navController: NavController) {
 
                 // Выпадающее меню
                 DropdownMenu(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background),
                     expanded = isDropdownExpanded,
                     onDismissRequest = { isDropdownExpanded = false }
                 ) {
@@ -182,7 +184,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.AutoStories,
                     onClick = {
-                        navController.navigate("StartTestScreen") {
+                        navController.navigate("training") {
                             launchSingleTop = true
                         }
                     },
@@ -192,7 +194,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.NotificationImportant,
                     onClick = {
-                        navController.navigate("StartTestScreen") {
+                        navController.navigate("training") {
                             launchSingleTop = true
                         }
                     },
@@ -202,7 +204,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.School,
                     onClick = {
-                        navController.navigate("StartTestScreen") {
+                        navController.navigate("training") {
                             launchSingleTop = true
                         }
                     },
@@ -212,7 +214,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.ChecklistRtl,
                     onClick = {
-                        navController.navigate("StartTestScreen") {
+                        navController.navigate("training") {
                             launchSingleTop = true
                         }
                     },

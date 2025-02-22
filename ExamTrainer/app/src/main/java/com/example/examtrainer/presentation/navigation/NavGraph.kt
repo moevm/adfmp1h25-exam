@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.examtrainer.presentation.ui.MainScreen
-import com.example.examtrainer.presentation.ui.StartTestScreen
+import com.example.examtrainer.presentation.ui.training.TrainingScreen
 
 @Composable
 fun NavGraph() {
@@ -18,8 +18,8 @@ fun NavGraph() {
         composable("main") {
             MainScreen(navController)
         }
-        composable("StartTestScreen") {
-            StartTestScreen(navController)
+        composable("training") {
+            TrainingScreen(navController)
         }
     }
 }

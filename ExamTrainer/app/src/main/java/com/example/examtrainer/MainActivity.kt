@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         setContent {
             ExamTrainerTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NavGraph()
