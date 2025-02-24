@@ -7,3 +7,9 @@ data class Question(
     val correctAnswer: String,
     val hint: String
 )
+
+data class ExamQuestion(
+    val text: String,
+    val answers: List<String>,
+    val correctAnswer: String
+)
