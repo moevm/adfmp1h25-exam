@@ -3,7 +3,6 @@ package com.example.examtrainer.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.examtrainer.domain.model.Question
-import com.example.examtrainer.presentation.state.TrainingScreenState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,10 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class TrainingViewModel : ViewModel() {
-    // Состояние экрана (Welcome, Question, Result)
-    private val _screenState = MutableStateFlow<TrainingScreenState>(TrainingScreenState.Welcome)
-    val screenState: StateFlow<TrainingScreenState> = _screenState
-
     // Список вопросов
     private val _questions = MutableStateFlow<List<Question>>(emptyList())
     val questions: StateFlow<List<Question>> = _questions
@@ -51,7 +46,6 @@ class TrainingViewModel : ViewModel() {
     }
 
     fun startTraining() {
-        _screenState.value = TrainingScreenState.Question
         startTimer()
     }
 
@@ -85,10 +79,11 @@ class TrainingViewModel : ViewModel() {
             _selectedAnswer.value = null
             _isAnswerConfirmed.value = false
             _isHintUsed.value = false
-        } else {
-            stopTimer()
-            _screenState.value = TrainingScreenState.Result
         }
+    }
+
+    fun stopTraining() {
+        stopTimer()
     }
 
     private fun startTimer() {
