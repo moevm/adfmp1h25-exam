@@ -116,7 +116,7 @@ fun MainScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(50.dp, Alignment.CenterVertically)
         ) {
             StatisticWidget(
-                onClick = { navController.navigate("training") {
+                onClick = { navController.navigate("training-root") {
                     launchSingleTop = true
                 } }
             )
@@ -184,7 +184,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.AutoStories,
                     onClick = {
-                        navController.navigate("training") {
+                        navController.navigate("training-root") {
                             launchSingleTop = true
                         }
                     },
@@ -194,7 +194,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.NotificationImportant,
                     onClick = {
-                        navController.navigate("training") {
+                        navController.navigate("training-root") {
                             launchSingleTop = true
                         }
                     },
@@ -204,7 +204,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.School,
                     onClick = {
-                        navController.navigate("training") {
+                        navController.navigate("training-root") {
                             launchSingleTop = true
                         }
                     },
@@ -214,7 +214,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.ChecklistRtl,
                     onClick = {
-                        navController.navigate("training") {
+                        navController.navigate("training-root") {
                             launchSingleTop = true
                         }
                     },
