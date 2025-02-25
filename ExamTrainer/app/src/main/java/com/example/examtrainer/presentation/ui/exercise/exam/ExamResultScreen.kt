@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.compose.material.icons.rounded.DownloadDone
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 
@@ -95,12 +96,19 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
+
             Text(
                 text = "Экзамен сдан успешно!",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center
+            )
+
+            Icon(
+                Icons.Rounded.DownloadDone,
+                contentDescription = "Успех",
+                modifier = Modifier.size(100.dp)
             )
 
             Text(
@@ -124,6 +132,11 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
             )
         }
     }
+}
+
+@Composable
+fun examResult() {
+
 }
 
 @Composable
