@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.examtrainer.domain.model.ExamQuestion
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ExamViewModel : ViewModel() {
@@ -38,10 +41,24 @@ class ExamViewModel : ViewModel() {
     private val _wrongAnswersCount = MutableStateFlow(0)
     val wrongAnswersCount: StateFlow<Int> = _wrongAnswersCount
 
+    private val _successThreshold = MutableStateFlow(0.5)
+    val successThreshold: StateFlow<Boolean> = combine(
+        _correctAnswersCount,
+        _questions,
+        _successThreshold
+    ) { correctCount, questionsList, threshold ->
+        (correctCount.toDouble() / questionsList.size) >= threshold
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
     init {
         loadQuestions() // Загружаем вопросы
     }
 
+    // TODO: add work with time limit
     fun startExam() {
         startTimer()
     }

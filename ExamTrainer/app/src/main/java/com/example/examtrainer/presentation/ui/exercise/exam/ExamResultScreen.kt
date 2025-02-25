@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +51,7 @@ fun ExamResultScreen(navController: NavController) {
     val questions by viewModel.questions.collectAsState()
     val correctAnswersCount by viewModel.correctAnswersCount.collectAsState()
     val wrongAnswersCount by viewModel.wrongAnswersCount.collectAsState()
+    val successThreshold by viewModel.successThreshold.collectAsState()
 
     Column(
         modifier = Modifier
@@ -68,7 +71,11 @@ fun ExamResultScreen(navController: NavController) {
             }
         )
 
-        resultsBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
+        if (successThreshold) {
+            successResultBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
+        } else {
+            failureResultBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
+        }
 
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -82,12 +89,12 @@ fun ExamResultScreen(navController: NavController) {
 
 
 @Composable
-fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
+fun successResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth(.85f)
             .clip(RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f))
+            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
             .padding(25.dp),
     ) {
         Column(
@@ -96,7 +103,6 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
-
             Text(
                 text = "Экзамен сдан успешно!",
                 style = MaterialTheme.typography.titleLarge,
@@ -106,7 +112,7 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
             )
 
             Icon(
-                Icons.Rounded.DownloadDone,
+                Icons.Rounded.CheckCircle,
                 contentDescription = "Успех",
                 modifier = Modifier.size(100.dp)
             )
@@ -135,8 +141,55 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
 }
 
 @Composable
-fun examResult() {
+fun failureResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(.85f)
+            .clip(RoundedCornerShape(30.dp))
+            .background(MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.5f))
+            .padding(25.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(30.dp)
+        ) {
+            Text(
+                text = "Экзамен не сдан!",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
 
+            Icon(
+                Icons.Rounded.Cancel,
+                contentDescription = "Провал",
+                modifier = Modifier.size(100.dp)
+            )
+
+            Text(
+                text = String.format("Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Text(
+                text = "Всего вопросов: ${questionsCount}",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Text(
+                text = "Неверно: ${wrongAnswersCount}",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Text(
+                text = "Верно: ${correctAnswersCount}",
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
 }
 
 @Composable
