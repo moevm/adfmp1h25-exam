@@ -42,7 +42,7 @@ class ExamViewModel : ViewModel() {
         loadQuestions() // Загружаем вопросы
     }
 
-    fun startTraining() {
+    fun startExam() {
         startTimer()
     }
 
@@ -73,7 +73,7 @@ class ExamViewModel : ViewModel() {
         }
     }
 
-    fun stopTraining() {
+    fun stopExam() {
         stopTimer()
     }
 

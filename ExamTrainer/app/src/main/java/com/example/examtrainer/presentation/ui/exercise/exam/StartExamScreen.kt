@@ -13,14 +13,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
-import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
+import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 
 @Composable
 fun StartExamScreen (navController: NavController) {
     val backStackEntry = remember(navController) {
-        navController.getBackStackEntry("training-root") // Укажите общий ключ
+        navController.getBackStackEntry("exam-root") // Укажите общий ключ
     }
-    val viewModel: TrainingViewModel = viewModel(backStackEntry)
+    val viewModel: ExamViewModel = viewModel(backStackEntry)
 
     Column(
         modifier = Modifier
@@ -43,8 +43,8 @@ fun StartExamScreen (navController: NavController) {
                     "\n" +
                     "В ходе решения экзамена Вы не сможете получить подсказку по вопросу или посмотреть результат своего ответа.",
             onStart = {
-                viewModel.startTraining()
-                navController.navigate("training-question") {
+                viewModel.startExam()
+                navController.navigate("exam-question") {
                     launchSingleTop = true
                     restoreState = true
                 }

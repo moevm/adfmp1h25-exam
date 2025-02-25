@@ -7,6 +7,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.examtrainer.presentation.ui.MainScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.StartExamScreen
+import com.example.examtrainer.presentation.ui.exercise.exam.ExamQuestionScreen
+import com.example.examtrainer.presentation.ui.exercise.exam.ExamResultScreen
 import com.example.examtrainer.presentation.ui.exercise.training.QuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.training.ResultScreen
 import com.example.examtrainer.presentation.ui.exercise.training.StartTrainingScreen

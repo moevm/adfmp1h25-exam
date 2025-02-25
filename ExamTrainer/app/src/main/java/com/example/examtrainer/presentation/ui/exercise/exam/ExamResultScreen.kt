@@ -1,7 +1,5 @@
 package com.example.examtrainer.presentation.ui.exercise.exam
 
-package com.example.examtrainer.presentation.ui.exercise.training
-
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,14 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.ui.CommonHeader
-import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
+import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 
 @Composable
-fun ResultScreen(navController: NavController) {
+fun ExamResultScreen(navController: NavController) {
     val backStackEntry = remember(navController) {
-        navController.getBackStackEntry("training-root") // Укажите общий ключ
+        navController.getBackStackEntry("exam-root") // Укажите общий ключ
     }
-    val viewModel: TrainingViewModel = viewModel(backStackEntry)
+    val viewModel: ExamViewModel = viewModel(backStackEntry)
 
     val time by viewModel.elapsedTime.collectAsState()
     val questions by viewModel.questions.collectAsState()
@@ -75,7 +73,7 @@ fun ResultScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ){
-            trainingShareButton()
+            examShareButton()
             backToMainSreenButton(navController)
         }
     }
@@ -98,7 +96,7 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
             verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
             Text(
-                text = "Результат тренировки",
+                text = "Экзамен сдан успешно!",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -129,7 +127,7 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
 }
 
 @Composable
-fun trainingShareButton() {
+fun examShareButton() {
     val context = LocalContext.current
     Button(
         shape = RoundedCornerShape(10.dp),
