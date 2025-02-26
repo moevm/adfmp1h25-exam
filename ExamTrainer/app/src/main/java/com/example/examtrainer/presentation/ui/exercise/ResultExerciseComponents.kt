@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun shareButton(text: String, shareText: String) {
+fun ShareButton(text: String, shareText: String) {
     val context = LocalContext.current
     Button(
         shape = RoundedCornerShape(10.dp),
@@ -52,7 +52,7 @@ fun shareButton(text: String, shareText: String) {
 }
 
 @Composable
-fun backToMainSreenButton(text: String, onClick: () -> Unit) {
+fun BackToMainSreenButton(text: String, onClick: () -> Unit) {
     Button(
         shape = RoundedCornerShape(10.dp),
         onClick = {

@@ -26,8 +26,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
-import com.example.examtrainer.presentation.ui.exercise.backToMainSreenButton
-import com.example.examtrainer.presentation.ui.exercise.shareButton
+import com.example.examtrainer.presentation.ui.exercise.BackToMainSreenButton
+import com.example.examtrainer.presentation.ui.exercise.ShareButton
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
 
@@ -65,12 +65,12 @@ fun ResultScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ){
-            shareButton(
+            ShareButton(
                 text = "Поделиться",
                 shareText = "Текст для того, чтобы поделиться!"
             )
 
-            backToMainSreenButton(
+            BackToMainSreenButton(
                 text = "На выход",
                 onClick = {
                     navController.navigate(NavRoutes.MAIN) {
