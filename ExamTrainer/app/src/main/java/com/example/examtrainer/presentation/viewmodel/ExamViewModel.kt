@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ExamViewModel : ViewModel() {
@@ -34,6 +35,19 @@ class ExamViewModel : ViewModel() {
     val elapsedTime: StateFlow<Long> = _elapsedTime
     private var timerJob: Job? = null
 
+    // Ограничение по времени
+    private val _limitedTime = MutableStateFlow(20 * 60L) // 20 минут
+    val limitedTime: StateFlow<Long> = _limitedTime
+
+    // Проверка на приближение к ограничению по времени
+    private val _isCloseToEnd = MutableStateFlow<Boolean>(false)
+    val isCloseToEnd: StateFlow<Boolean> = _isCloseToEnd
+    private val _closeThreshold: Long = 2 * 60L // 2 минуты
+
+    // Проверка на конец экзамена
+    private val _isEnd = MutableStateFlow<Boolean>(false)
+    val isEnd: StateFlow<Boolean> = _isEnd
+
     // Статистика
     private val _correctAnswersCount = MutableStateFlow(0)
     val correctAnswersCount: StateFlow<Int> = _correctAnswersCount
@@ -41,7 +55,8 @@ class ExamViewModel : ViewModel() {
     private val _wrongAnswersCount = MutableStateFlow(0)
     val wrongAnswersCount: StateFlow<Int> = _wrongAnswersCount
 
-    private val _successThreshold = MutableStateFlow(0.5)
+    private val _examThreshold = 0.5
+    private val _successThreshold = MutableStateFlow(_examThreshold)
     val successThreshold: StateFlow<Boolean> = combine(
         _correctAnswersCount,
         _questions,
@@ -58,7 +73,6 @@ class ExamViewModel : ViewModel() {
         loadQuestions() // Загружаем вопросы
     }
 
-    // TODO: add work with time limit
     fun startExam() {
         startTimer()
     }
@@ -100,6 +114,8 @@ class ExamViewModel : ViewModel() {
             while (true) {
                 delay(1000)
                 _elapsedTime.value += 1
+                _isCloseToEnd.update { (_limitedTime.value - _elapsedTime.value) <= _closeThreshold }
+                _isEnd.update { elapsedTime.value >= limitedTime.value }
             }
         }
     }

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +53,9 @@ fun ExamQuestionScreen(navController: NavController) {
     val index by viewModel.currentIndex.collectAsState()
     val selectedAnswer by viewModel.selectedAnswer.collectAsState()
     val time by viewModel.elapsedTime.collectAsState()
+    val limitedTime by viewModel.limitedTime.collectAsState()
+    val isCloseToEnd by viewModel.isCloseToEnd.collectAsState()
+    val isEnd by viewModel.isEnd.collectAsState()
     val isAnswerConfirmed by viewModel.isAnswerConfirmed.collectAsState()
     val defaultAnswerColor = MaterialTheme.colorScheme.secondaryContainer
     val selectedAnswerColor = MaterialTheme.colorScheme.primaryContainer
@@ -63,6 +67,14 @@ fun ExamQuestionScreen(navController: NavController) {
         }
     }
 
+    if (isEnd) {
+        viewModel.stopExam()
+        navController.navigate("exam-result", {
+            launchSingleTop = true
+            restoreState = true
+        })
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,14 +83,16 @@ fun ExamQuestionScreen(navController: NavController) {
             .windowInsetsPadding(WindowInsets.navigationBars), // Отступ от нижней панели
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        QuestionScreenHeader(
+        ExamQuestionScreenHeader(
             backButtonText= "Выход",
             onClick = {
                 navController.navigate("main") {
                     launchSingleTop = true // Запуск только одного экземпляра
                 }
             },
+            isCloseToEnd = isCloseToEnd,
             time = time,
+            limitedTime = limitedTime
         )
 
         // Область вопроса
@@ -124,7 +138,7 @@ fun ExamQuestionScreen(navController: NavController) {
 }
 
 @Composable
-fun QuestionScreenHeader(backButtonText: String, onClick: () -> Unit, time: Long) {
+fun ExamQuestionScreenHeader(backButtonText: String, onClick: () -> Unit, isCloseToEnd: Boolean, time: Long, limitedTime: Long) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -151,11 +165,26 @@ fun QuestionScreenHeader(backButtonText: String, onClick: () -> Unit, time: Long
                 style = MaterialTheme.typography.labelLarge
             )
         }
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+                .background(
+                    color = if (isCloseToEnd)
+                            MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.65f)
+                            else MaterialTheme.colorScheme.background.copy(alpha = 0f),
+                    shape = RoundedCornerShape(5.dp)),
+                contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = String.format("%02d:%02d/%02d:%02d",
+                    (time % 3600) / 60, time % 60,
+                    (limitedTime % 3600) / 60, limitedTime % 60),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            )
+        }
 
-        Text(
-            text = String.format("%02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
-            style = MaterialTheme.typography.bodySmall
-        )
     }
 }
 
