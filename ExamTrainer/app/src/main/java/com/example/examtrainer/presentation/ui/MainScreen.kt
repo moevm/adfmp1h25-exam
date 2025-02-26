@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.School
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import com.example.examtrainer.domain.model.Exam
+import com.example.examtrainer.presentation.navigation.NavRoutes
 
 
 @Composable
@@ -116,7 +117,7 @@ fun MainScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(50.dp, Alignment.CenterVertically)
         ) {
             StatisticWidget(
-                onClick = { navController.navigate("training-root") {
+                onClick = { navController.navigate(NavRoutes.TRAINING_ROOT) {
                     launchSingleTop = true
                 } }
             )
@@ -184,7 +185,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.AutoStories,
                     onClick = {
-                        navController.navigate("training-root") {
+                        navController.navigate(NavRoutes.TRAINING_ROOT) {
                             launchSingleTop = true
                         }
                     },
@@ -194,7 +195,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.NotificationImportant,
                     onClick = {
-                        navController.navigate("training-root") {
+                        navController.navigate(NavRoutes.TRAINING_ROOT) {
                             launchSingleTop = true
                         }
                     },
@@ -204,7 +205,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.School,
                     onClick = {
-                        navController.navigate("training-root") {
+                        navController.navigate(NavRoutes.TRAINING_ROOT) {
                             launchSingleTop = true
                         }
                     },
@@ -214,7 +215,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.ChecklistRtl,
                     onClick = {
-                        navController.navigate("training-root") {
+                        navController.navigate(NavRoutes.TRAINING_ROOT) {
                             launchSingleTop = true
                         }
                     },
