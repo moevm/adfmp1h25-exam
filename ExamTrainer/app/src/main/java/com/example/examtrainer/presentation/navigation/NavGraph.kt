@@ -8,7 +8,7 @@ import androidx.navigation.navigation
 import com.example.examtrainer.presentation.ui.MainScreen
 import com.example.examtrainer.presentation.ui.exercise.training.QuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.training.ResultScreen
-import com.example.examtrainer.presentation.ui.exercise.training.StartTrainingScreen
+import com.example.examtrainer.presentation.ui.exercise.training.StartScreen
 
 @Composable
 fun NavGraph() {
@@ -16,22 +16,22 @@ fun NavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = "main"
+        startDestination = NavRoutes.MAIN
     ) {
-        composable("main") {
+        composable(NavRoutes.MAIN) {
             MainScreen(navController)
         }
         navigation(
-            startDestination = "training-start",
-            route = "training-root"
+            startDestination = NavRoutes.TRAINING_START,
+            route = NavRoutes.TRAINING_ROOT
         ) {
-            composable("training-start") {
-                StartTrainingScreen(navController)
+            composable(NavRoutes.TRAINING_START) {
+                StartScreen(navController)
             }
-            composable("training-question") {
+            composable(NavRoutes.TRAINING_QUESTION) {
                 QuestionScreen(navController)
             }
-            composable("training-result") {
+            composable(NavRoutes.TRAINING_RESULT) {
                 ResultScreen(navController)
             }
         }
