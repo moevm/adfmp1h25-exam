@@ -9,9 +9,9 @@ import com.example.examtrainer.presentation.ui.MainScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.StartExamScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamResultScreen
-import com.example.examtrainer.presentation.ui.exercise.training.QuestionScreen
-import com.example.examtrainer.presentation.ui.exercise.training.ResultScreen
-import com.example.examtrainer.presentation.ui.exercise.training.StartScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingQuestionScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingResultScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingStartScreen
 
 @Composable
 fun NavGraph() {
@@ -29,13 +29,13 @@ fun NavGraph() {
             route = NavRoutes.TRAINING_ROOT
         ) {
             composable(NavRoutes.TRAINING_START) {
-                StartScreen(navController)
+                TrainingStartScreen(navController)
             }
             composable(NavRoutes.TRAINING_QUESTION) {
-                QuestionScreen(navController)
+                TrainingQuestionScreen(navController)
             }
             composable(NavRoutes.TRAINING_RESULT) {
-                ResultScreen(navController)
+                TrainingResultScreen(navController)
             }
         }
         navigation(

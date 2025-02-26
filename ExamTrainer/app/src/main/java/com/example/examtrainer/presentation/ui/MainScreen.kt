@@ -195,7 +195,7 @@ fun MainScreen(navController: NavController) {
                 TrainTypeButton(
                     firstIcon = Icons.Filled.NotificationImportant,
                     onClick = {
-                        navController.navigate(NavRoutes.TRAINING_ROOT) {
+                        navController.navigate("exam-root") {
                             launchSingleTop = true
                         }
                     },

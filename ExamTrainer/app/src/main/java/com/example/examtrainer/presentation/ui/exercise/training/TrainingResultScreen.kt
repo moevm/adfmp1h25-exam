@@ -32,7 +32,7 @@ import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
 
 @Composable
-fun ResultScreen(navController: NavController) {
+fun TrainingResultScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
     val viewModel: TrainingViewModel = viewModel(backStackEntry)
 

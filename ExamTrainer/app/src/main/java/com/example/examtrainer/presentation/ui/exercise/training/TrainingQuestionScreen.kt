@@ -50,7 +50,7 @@ enum class AnswerStatus {
 }
 
 @Composable
-fun QuestionScreen(navController: NavController) {
+fun TrainingQuestionScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
     val viewModel: TrainingViewModel = viewModel(backStackEntry)
 
