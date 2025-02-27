@@ -7,19 +7,18 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
+import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
 
 @Composable
-fun StartTrainingScreen (navController: NavController) {
-    val backStackEntry = remember(navController) {
-        navController.getBackStackEntry("training-root") // Укажите общий ключ
-    }
+fun TrainingStartScreen (navController: NavController) {
+    val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
     val viewModel: TrainingViewModel = viewModel(backStackEntry)
 
     Column(
@@ -31,7 +30,7 @@ fun StartTrainingScreen (navController: NavController) {
         CommonHeader(
             backButtonText = "Выход",
             onClick = {
-                navController.navigate("main") {
+                navController.navigate(NavRoutes.MAIN) {
                     launchSingleTop = true // Запуск только одного экземпляра
                 }
             }
@@ -44,7 +43,7 @@ fun StartTrainingScreen (navController: NavController) {
                     "В ходе решения экзамена Вы сможете получить подсказку по вопросу и посмотреть результат своего ответа.",
             onStart = {
                 viewModel.startTraining()
-                navController.navigate("training-question") {
+                navController.navigate(NavRoutes.TRAINING_QUESTION) {
                     launchSingleTop = true
                     restoreState = true
                 }

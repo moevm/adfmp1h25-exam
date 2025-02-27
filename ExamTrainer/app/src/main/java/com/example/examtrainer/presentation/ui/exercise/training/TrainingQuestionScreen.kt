@@ -33,15 +33,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.alpha
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.exercise.AnswersVariants
 import com.example.examtrainer.presentation.ui.exercise.ConfirmButton
 import com.example.examtrainer.presentation.ui.exercise.HintComponent
 import com.example.examtrainer.presentation.ui.exercise.NextButton
+import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
+import java.util.Locale
 
 enum class AnswerStatus {
     Correct,
@@ -49,10 +51,8 @@ enum class AnswerStatus {
 }
 
 @Composable
-fun QuestionScreen(navController: NavController) {
-    val backStackEntry = remember(navController) {
-        navController.getBackStackEntry("training-root") // Укажите общий ключ
-    }
+fun TrainingQuestionScreen(navController: NavController) {
+    val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
     val viewModel: TrainingViewModel = viewModel(backStackEntry)
 
     val questions by viewModel.questions.collectAsState()
@@ -88,7 +88,7 @@ fun QuestionScreen(navController: NavController) {
         QuestionScreenHeader(
             backButtonText= "Выход",
             onClick = {
-                navController.navigate("main") {
+                navController.navigate(NavRoutes.MAIN) {
                     launchSingleTop = true // Запуск только одного экземпляра
                 }
             },
@@ -131,7 +131,7 @@ fun QuestionScreen(navController: NavController) {
                             viewModel.nextQuestion()
                         else {
                             viewModel.stopTraining()
-                            navController.navigate("training-result", {
+                            navController.navigate(NavRoutes.TRAINING_RESULT, {
                                 launchSingleTop = true
                                 restoreState = true
                             })
@@ -218,7 +218,7 @@ fun QuestionScreenHeader(backButtonText: String, onClick: () -> Unit, time: Long
         }
 
         Text(
-            text = String.format("%02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
+            text = String.format(Locale("ru", "RU"), "%02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
             style = MaterialTheme.typography.bodySmall
         )
     }

@@ -9,9 +9,9 @@ import com.example.examtrainer.presentation.ui.MainScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.StartExamScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamResultScreen
-import com.example.examtrainer.presentation.ui.exercise.training.QuestionScreen
-import com.example.examtrainer.presentation.ui.exercise.training.ResultScreen
-import com.example.examtrainer.presentation.ui.exercise.training.StartTrainingScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingQuestionScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingResultScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingStartScreen
 
 @Composable
 fun NavGraph() {
@@ -19,23 +19,23 @@ fun NavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = "main"
+        startDestination = NavRoutes.MAIN
     ) {
-        composable("main") {
+        composable(NavRoutes.MAIN) {
             MainScreen(navController)
         }
         navigation(
-            startDestination = "training-start",
-            route = "training-root"
+            startDestination = NavRoutes.TRAINING_START,
+            route = NavRoutes.TRAINING_ROOT
         ) {
-            composable("training-start") {
-                StartTrainingScreen(navController)
+            composable(NavRoutes.TRAINING_START) {
+                TrainingStartScreen(navController)
             }
-            composable("training-question") {
-                QuestionScreen(navController)
+            composable(NavRoutes.TRAINING_QUESTION) {
+                TrainingQuestionScreen(navController)
             }
-            composable("training-result") {
-                ResultScreen(navController)
+            composable(NavRoutes.TRAINING_RESULT) {
+                TrainingResultScreen(navController)
             }
         }
         navigation(

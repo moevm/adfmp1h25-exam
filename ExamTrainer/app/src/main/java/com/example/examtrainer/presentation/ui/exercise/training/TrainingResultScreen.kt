@@ -1,47 +1,40 @@
 package com.example.examtrainer.presentation.ui.exercise.training
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
+import com.example.examtrainer.presentation.ui.exercise.BackToMainSreenButton
+import com.example.examtrainer.presentation.ui.exercise.ShareButton
+import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
+import java.util.Locale
 
 @Composable
-fun ResultScreen(navController: NavController) {
-    val backStackEntry = remember(navController) {
-        navController.getBackStackEntry("training-root") // Укажите общий ключ
-    }
+fun TrainingResultScreen(navController: NavController) {
+    val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
     val viewModel: TrainingViewModel = viewModel(backStackEntry)
 
     val time by viewModel.elapsedTime.collectAsState()
@@ -61,27 +54,38 @@ fun ResultScreen(navController: NavController) {
         CommonHeader(
             backButtonText = "Выход",
             onClick = {
-                navController.navigate("main") {
+                navController.navigate(NavRoutes.MAIN) {
                     launchSingleTop = true // Запуск только одного экземпляра
                 }
             }
         )
 
-        resultsBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
+        ResultsBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
 
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ){
-            trainingShareButton()
-            backToMainSreenButton(navController)
+            ShareButton(
+                text = "Поделиться",
+                shareText = "Текст для того, чтобы поделиться!"
+            )
+
+            BackToMainSreenButton(
+                text = "На выход",
+                onClick = {
+                    navController.navigate(NavRoutes.MAIN) {
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
     }
 }
 
 
 @Composable
-fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
+fun ResultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth(.85f)
@@ -104,7 +108,7 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
             )
 
             Text(
-                text = String.format("Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
+                text = String.format(Locale("ru", "RU"), "Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -125,56 +129,3 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
         }
     }
 }
-
-@Composable
-fun trainingShareButton() {
-    val context = LocalContext.current
-    Button(
-        shape = RoundedCornerShape(10.dp),
-        onClick = {
-            val shareIntent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "Текст для того, чтобы поделиться!")
-                type = "text/plain"
-            }
-            context.startActivity(Intent.createChooser(shareIntent, "Поделиться через"))
-        }
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Share,
-                contentDescription = "Share",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-            Text(
-                modifier = Modifier
-                    .padding(vertical = 10.dp, horizontal = 22.dp),
-                text = "Поделиться",
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-    }
-}
-
-@Composable
-fun backToMainSreenButton(navController: NavController) {
-    Button(
-        shape = RoundedCornerShape(10.dp),
-        onClick = {
-            navController.navigate("main") {
-                launchSingleTop = true // Запуск только одного экземпляра
-            }
-        }
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 22.dp),
-            text = "На выход",
-            style = MaterialTheme.typography.bodySmall
-        )
-    }
-}
-
