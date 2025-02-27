@@ -30,6 +30,7 @@ import com.example.examtrainer.presentation.ui.exercise.BackToMainSreenButton
 import com.example.examtrainer.presentation.ui.exercise.ShareButton
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
+import java.util.Locale
 
 @Composable
 fun TrainingResultScreen(navController: NavController) {
@@ -59,7 +60,7 @@ fun TrainingResultScreen(navController: NavController) {
             }
         )
 
-        resultsBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
+        ResultsBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
 
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,7 +85,7 @@ fun TrainingResultScreen(navController: NavController) {
 
 
 @Composable
-fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
+fun ResultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth(.85f)
@@ -107,7 +108,7 @@ fun resultsBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctA
             )
 
             Text(
-                text = String.format("Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
+                text = String.format(Locale("ru", "RU"), "Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
                 style = MaterialTheme.typography.bodyMedium
             )
 
