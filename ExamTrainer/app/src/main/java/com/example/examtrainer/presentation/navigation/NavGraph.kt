@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.examtrainer.presentation.ui.MainScreen
-import com.example.examtrainer.presentation.ui.exercise.exam.StartExamScreen
+import com.example.examtrainer.presentation.ui.exercise.exam.ExamStartScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamResultScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingQuestionScreen
@@ -39,16 +39,16 @@ fun NavGraph() {
             }
         }
         navigation(
-            startDestination = "exam-start",
-            route = "exam-root"
+            startDestination =  NavRoutes.EXAM_START,
+            route = NavRoutes.EXAM_ROOT
         ) {
-            composable("exam-start") {
-                StartExamScreen(navController)
+            composable(NavRoutes.EXAM_START) {
+                ExamStartScreen(navController)
             }
-            composable("exam-question") {
+            composable(NavRoutes.EXAM_QUESTION) {
                 ExamQuestionScreen(navController)
             }
-            composable("exam-result") {
+            composable(NavRoutes.EXAM_RESULT) {
                 ExamResultScreen(navController)
             }
         }
