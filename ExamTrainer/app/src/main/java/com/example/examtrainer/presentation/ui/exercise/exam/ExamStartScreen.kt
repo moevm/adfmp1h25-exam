@@ -17,7 +17,7 @@ import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 
 @Composable
-fun StartExamScreen (navController: NavController) {
+fun ExamStartScreen (navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
     val viewModel: ExamViewModel = viewModel(backStackEntry)
 

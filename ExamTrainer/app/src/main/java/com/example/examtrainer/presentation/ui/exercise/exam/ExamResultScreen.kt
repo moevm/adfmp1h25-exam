@@ -35,6 +35,7 @@ import com.example.examtrainer.presentation.ui.exercise.BackToMainSreenButton
 import com.example.examtrainer.presentation.ui.exercise.ShareButton
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
+import java.util.Locale
 
 @Composable
 fun ExamResultScreen(navController: NavController) {
@@ -66,9 +67,9 @@ fun ExamResultScreen(navController: NavController) {
         )
 
         if (successThreshold) {
-            successResultBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
+            SuccessResultBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
         } else {
-            failureResultBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
+            FailureResultBox(time, questions.size, wrongAnswersCount, correctAnswersCount)
         }
 
         Column (
@@ -94,7 +95,7 @@ fun ExamResultScreen(navController: NavController) {
 
 
 @Composable
-fun successResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
+fun SuccessResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth(.85f)
@@ -123,7 +124,9 @@ fun successResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, co
             )
 
             Text(
-                text = String.format("Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
+                text = String.format(
+                    Locale("ru", "RU"),
+                    "Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -146,7 +149,7 @@ fun successResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, co
 }
 
 @Composable
-fun failureResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
+fun FailureResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, correctAnswersCount: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth(.85f)
@@ -175,7 +178,9 @@ fun failureResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, co
             )
 
             Text(
-                text = String.format("Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
+                text = String.format(
+                    Locale("ru", "RU"),
+                    "Время: %02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
                 style = MaterialTheme.typography.bodyMedium
             )
 

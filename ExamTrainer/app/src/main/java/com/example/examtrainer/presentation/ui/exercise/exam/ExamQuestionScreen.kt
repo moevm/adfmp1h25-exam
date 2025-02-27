@@ -42,6 +42,7 @@ import com.example.examtrainer.presentation.ui.exercise.AnswersVariants
 import com.example.examtrainer.presentation.ui.exercise.ConfirmButton
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
+import java.util.Locale
 
 @Composable
 fun ExamQuestionScreen(navController: NavController) {
@@ -176,7 +177,9 @@ fun ExamQuestionScreenHeader(backButtonText: String, onClick: () -> Unit, isClos
                 contentAlignment = Alignment.Center
         ) {
             Text(
-                text = String.format("%02d:%02d/%02d:%02d",
+                text = String.format(
+                    Locale("ru", "RU"),
+                    "%02d:%02d/%02d:%02d",
                     (time % 3600) / 60, time % 60,
                     (limitedTime % 3600) / 60, limitedTime % 60),
                 style = MaterialTheme.typography.bodySmall,
