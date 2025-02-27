@@ -7,20 +7,18 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
+import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 
 @Composable
 fun StartExamScreen (navController: NavController) {
-    val backStackEntry = remember(navController) {
-        navController.getBackStackEntry(NavRoutes.EXAM_ROOT) // Укажите общий ключ
-    }
+    val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
     val viewModel: ExamViewModel = viewModel(backStackEntry)
 
     Column(

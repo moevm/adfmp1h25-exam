@@ -34,20 +34,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.alpha
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.exercise.AnswersVariants
 import com.example.examtrainer.presentation.ui.exercise.ConfirmButton
+import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 
 @Composable
 fun ExamQuestionScreen(navController: NavController) {
-    val backStackEntry = remember(navController) {
-        navController.getBackStackEntry(NavRoutes.EXAM_ROOT) // Укажите общий ключ
-    }
+    val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
     val viewModel: ExamViewModel = viewModel(backStackEntry)
 
     val questions by viewModel.questions.collectAsState()
