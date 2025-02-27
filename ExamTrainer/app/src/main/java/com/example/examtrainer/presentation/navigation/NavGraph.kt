@@ -39,16 +39,16 @@ fun NavGraph() {
             }
         }
         navigation(
-            startDestination = "exam-start",
-            route = "exam-root"
+            startDestination =  NavRoutes.EXAM_START,
+            route = NavRoutes.EXAM_ROOT
         ) {
-            composable("exam-start") {
+            composable(NavRoutes.EXAM_START) {
                 StartExamScreen(navController)
             }
-            composable("exam-question") {
+            composable(NavRoutes.EXAM_QUESTION) {
                 ExamQuestionScreen(navController)
             }
-            composable("exam-result") {
+            composable(NavRoutes.EXAM_RESULT) {
                 ExamResultScreen(navController)
             }
         }

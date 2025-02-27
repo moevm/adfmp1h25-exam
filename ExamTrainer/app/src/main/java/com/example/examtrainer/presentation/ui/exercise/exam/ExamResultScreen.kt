@@ -36,14 +36,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.compose.material.icons.rounded.DownloadDone
+import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 
 @Composable
 fun ExamResultScreen(navController: NavController) {
     val backStackEntry = remember(navController) {
-        navController.getBackStackEntry("exam-root") // Укажите общий ключ
+        navController.getBackStackEntry(NavRoutes.EXAM_ROOT) // Укажите общий ключ
     }
     val viewModel: ExamViewModel = viewModel(backStackEntry)
 
@@ -65,7 +65,7 @@ fun ExamResultScreen(navController: NavController) {
         CommonHeader(
             backButtonText = "Выход",
             onClick = {
-                navController.navigate("main") {
+                navController.navigate(NavRoutes.MAIN) {
                     launchSingleTop = true // Запуск только одного экземпляра
                 }
             }
@@ -230,7 +230,7 @@ fun backToMainSreenButton(navController: NavController) {
     Button(
         shape = RoundedCornerShape(10.dp),
         onClick = {
-            navController.navigate("main") {
+            navController.navigate(NavRoutes.MAIN) {
                 launchSingleTop = true // Запуск только одного экземпляра
             }
         }

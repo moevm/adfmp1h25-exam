@@ -38,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.alpha
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.exercise.AnswersVariants
 import com.example.examtrainer.presentation.ui.exercise.ConfirmButton
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
@@ -45,7 +46,7 @@ import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 @Composable
 fun ExamQuestionScreen(navController: NavController) {
     val backStackEntry = remember(navController) {
-        navController.getBackStackEntry("exam-root") // Укажите общий ключ
+        navController.getBackStackEntry(NavRoutes.EXAM_ROOT) // Укажите общий ключ
     }
     val viewModel: ExamViewModel = viewModel(backStackEntry)
 
@@ -69,7 +70,7 @@ fun ExamQuestionScreen(navController: NavController) {
 
     if (isEnd) {
         viewModel.stopExam()
-        navController.navigate("exam-result", {
+        navController.navigate(NavRoutes.EXAM_RESULT, {
             launchSingleTop = true
             restoreState = true
         })
@@ -86,7 +87,7 @@ fun ExamQuestionScreen(navController: NavController) {
         ExamQuestionScreenHeader(
             backButtonText= "Выход",
             onClick = {
-                navController.navigate("main") {
+                navController.navigate(NavRoutes.MAIN) {
                     launchSingleTop = true // Запуск только одного экземпляра
                 }
             },
@@ -126,7 +127,7 @@ fun ExamQuestionScreen(navController: NavController) {
                         viewModel.nextQuestion()
                     else {
                         viewModel.stopExam()
-                        navController.navigate("exam-result", {
+                        navController.navigate(NavRoutes.EXAM_RESULT, {
                             launchSingleTop = true
                             restoreState = true
                         })
