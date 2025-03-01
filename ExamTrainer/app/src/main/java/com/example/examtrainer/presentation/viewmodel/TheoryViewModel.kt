@@ -36,9 +36,16 @@ class TheoryViewModel : ViewModel() {
                     Section(
                         "UNIX-подобные операционные системы",
                         """
-                            Какой-то контент
+                            ## UNIX-подобные операционные системы
                             
-                            Контент продолжается...
+                            **Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam tempor eros eget scelerisque. Etiam condimentum non nunc non porta. Aliquam eu risus neque. Phasellus pretium sit amet ipsum at aliquet. Cras vitae velit ut erat tincidunt suscipit ac ac nibh. Quisque vehicula mi eros, vel blandit elit imperdiet a. Donec ut lorem vitae lorem feugiat porta sit amet vel magna. Proin maximus ex nec nisl vehicula rutrum.**
+                            
+                            *Lorem ipsum dolor sit amet*:
+                            - Curabitur convallis;
+                            - Tellus quis convallis blandit;
+                            - Praesent lorem nunc.
+
+                            Praesent lorem nunc, sagittis non elit et, vestibulum ullamcorper erat. Mauris lorem orci, dapibus ut feugiat vel, mattis nec ipsum. Vivamus sit amet massa scelerisque, venenatis magna at, malesuada nisl. Donec nec volutpat felis. Donec non risus enim. Donec a magna nisl. Ut imperdiet auctor bibendum. Suspendisse pulvinar quis enim non laoreet. Mauris id consectetur dui, sed egestas sapien. Morbi viverra, urna et lobortis volutpat, tellus sem lobortis risus, non fermentum massa nunc pretium nibh. Etiam dapibus odio venenatis tempor gravida.
                         """.trimIndent()
                     ),
                     Section(
