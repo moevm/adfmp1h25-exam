@@ -1,18 +1,20 @@
 package com.example.examtrainer.presentation.ui.theory
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
-import androidx.compose.material.icons.automirrored.filled.CompareArrows
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -26,6 +28,50 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.examtrainer.presentation.ui.CommonHeader
+
+@Composable
+fun TOC(
+    navController: NavController,
+    backButtonText: String,
+    backButtonRoute: String,
+    items: List<String>,
+    onItemClick: (Int) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .windowInsetsPadding(WindowInsets.navigationBars),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        CommonHeader(
+            backButtonText = backButtonText,
+            onClick = {
+                navController.navigate(backButtonRoute) {
+                    launchSingleTop = true
+                }
+            }
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(.9f)
+                .verticalScroll(ScrollState(0)),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            items.forEachIndexed { itemIdx, item ->
+                TOCDivider()
+                TOCButton(
+                    text = item,
+                    onClick = { onItemClick(itemIdx) },
+                )
+            }
+            TOCDivider()
+        }
+    }
+}
 
 @Composable
 fun TOCButton(text: String, onClick: () -> Unit) {
