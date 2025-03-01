@@ -159,6 +159,10 @@ class TheoryViewModel : ViewModel() {
                     ),
                 ),
             ),
+            Chapter(
+                title = "Очень-очень-очень-очень-очень-очень-очень-очень длинное-длинное название главы",
+                sections = emptyList(),
+            ),
         )
     }
 }
