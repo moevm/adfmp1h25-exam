@@ -9,9 +9,12 @@ import com.example.examtrainer.presentation.ui.MainScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamStartScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamResultScreen
+import com.example.examtrainer.presentation.ui.theory.TheoryChaptersTOCScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingResultScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingStartScreen
+import com.example.examtrainer.presentation.ui.theory.TheoryContentScreen
+import com.example.examtrainer.presentation.ui.theory.TheorySectionsTOCScreen
 
 @Composable
 fun NavGraph() {
@@ -39,7 +42,21 @@ fun NavGraph() {
             }
         }
         navigation(
-            startDestination =  NavRoutes.EXAM_START,
+            startDestination = NavRoutes.THEORY_CHAPTERS,
+            route = NavRoutes.THEORY_ROOT,
+        ) {
+            composable(NavRoutes.THEORY_CHAPTERS) {
+                TheoryChaptersTOCScreen(navController)
+            }
+            composable(NavRoutes.THEORY_SECTIONS) {
+                TheorySectionsTOCScreen(navController)
+            }
+            composable(NavRoutes.THEORY_CONTENT) {
+                TheoryContentScreen(navController)
+            }
+        }
+        navigation(
+            startDestination = NavRoutes.EXAM_START,
             route = NavRoutes.EXAM_ROOT
         ) {
             composable(NavRoutes.EXAM_START) {

@@ -2,6 +2,10 @@ package com.example.examtrainer.presentation.navigation
 
 object NavRoutes {
     const val MAIN = "main"
+    const val THEORY_ROOT = "theory-root"
+    const val THEORY_CHAPTERS = "theory-chapters"
+    const val THEORY_SECTIONS = "theory-subsections"
+    const val THEORY_CONTENT = "theory-content"
     const val TRAINING_ROOT = "training-root"
     const val TRAINING_START = "training-start"
     const val TRAINING_QUESTION = "training-question"
