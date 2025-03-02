@@ -17,7 +17,7 @@ import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.ExamViewModel
 
 @Composable
-fun ExamStartScreen (navController: NavController) {
+fun ExamStartScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
     val viewModel: ExamViewModel = viewModel(backStackEntry)
 
@@ -38,9 +38,12 @@ fun ExamStartScreen (navController: NavController) {
 
         StartExerciseInfoBox(
             headerText = "Экзамен",
-            infoText = "Вам будет предложено N вопросов по всему курсу “Выбранный экзамен”.\n" +
-                    "\n" +
-                    "В ходе решения экзамена Вы не сможете получить подсказку по вопросу или посмотреть результат своего ответа.",
+            infoText =
+            """
+                Вам будет предложено N вопросов по всему курсу “Выбранный экзамен”.
+                
+                В ходе решения экзамена Вы не сможете получить подсказку по вопросу или посмотреть результат своего ответа.
+            """.trimIndent(),
             onStart = {
                 viewModel.startExam()
                 navController.navigate(NavRoutes.EXAM_QUESTION) {
