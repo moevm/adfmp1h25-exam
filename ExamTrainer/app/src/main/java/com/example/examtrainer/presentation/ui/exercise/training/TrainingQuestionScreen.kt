@@ -88,7 +88,7 @@ fun TrainingQuestionScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         QuestionScreenHeader(
-            backButtonText= "Выход",
+            backButtonText = "Выход",
             onClick = {
                 navController.navigate(NavRoutes.MAIN) {
                     launchSingleTop = true // Запуск только одного экземпляра
@@ -101,7 +101,7 @@ fun TrainingQuestionScreen(navController: NavController) {
 
         // Область вопроса
         QuestionComponent(
-            currentQuestionNumber = index+1,
+            currentQuestionNumber = index + 1,
             questionsCount = questions.size,
             questionText = questions[index].text,
             isHintUsed = isHintUsed,
@@ -162,7 +162,7 @@ fun TrainingQuestionScreen(navController: NavController) {
 
 
 @Composable
-fun AnswersCountBox (count: Int, status: AnswerStatus) {
+fun AnswersCountBox(count: Int, status: AnswerStatus) {
     val boxColor = when (status) {
         AnswerStatus.Correct -> MaterialTheme.colorScheme.surface
         AnswerStatus.Wrong -> MaterialTheme.colorScheme.errorContainer
@@ -173,7 +173,8 @@ fun AnswersCountBox (count: Int, status: AnswerStatus) {
             .size(30.dp)
             .background(
                 color = boxColor,
-                shape = RoundedCornerShape(5.dp)),
+                shape = RoundedCornerShape(5.dp)
+            ),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -185,7 +186,13 @@ fun AnswersCountBox (count: Int, status: AnswerStatus) {
 }
 
 @Composable
-fun QuestionScreenHeader(backButtonText: String, onClick: () -> Unit, time: Long, correctAnswersCount: Int, wrongAnswersCount: Int) {
+fun QuestionScreenHeader(
+    backButtonText: String,
+    onClick: () -> Unit,
+    time: Long,
+    correctAnswersCount: Int,
+    wrongAnswersCount: Int
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -213,7 +220,7 @@ fun QuestionScreenHeader(backButtonText: String, onClick: () -> Unit, time: Long
             )
         }
 
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
@@ -227,15 +234,27 @@ fun QuestionScreenHeader(backButtonText: String, onClick: () -> Unit, time: Long
         }
 
         Text(
-            text = String.format(Locale("ru", "RU"), "%02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60),
+            text = String.format(
+                Locale("ru", "RU"),
+                "%02d:%02d:%02d",
+                time / 3600,
+                (time % 3600) / 60,
+                time % 60
+            ),
             style = MaterialTheme.typography.bodySmall
         )
     }
 }
 
 @Composable
-fun QuestionComponent(currentQuestionNumber: Int, questionsCount: Int, questionText: String, isHintUsed: Boolean, onClickHint: () -> Unit) {
-    Column (
+fun QuestionComponent(
+    currentQuestionNumber: Int,
+    questionsCount: Int,
+    questionText: String,
+    isHintUsed: Boolean,
+    onClickHint: () -> Unit
+) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
@@ -246,7 +265,6 @@ fun QuestionComponent(currentQuestionNumber: Int, questionsCount: Int, questionT
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-//                .background(Color.LightGray)
                 .padding(top=10.dp, start = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
@@ -270,7 +288,6 @@ fun QuestionComponent(currentQuestionNumber: Int, questionsCount: Int, questionT
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-//                .background(Color.LightGray)
                 .padding(bottom=10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
@@ -281,7 +298,7 @@ fun QuestionComponent(currentQuestionNumber: Int, questionsCount: Int, questionT
                     .clip(RoundedCornerShape(100))
                     .background(MaterialTheme.colorScheme.onPrimary)
                     .padding(5.dp)
-                    .clickable (enabled = !isHintUsed) {
+                    .clickable(enabled = !isHintUsed) {
                         onClickHint()
                     }
             ) {

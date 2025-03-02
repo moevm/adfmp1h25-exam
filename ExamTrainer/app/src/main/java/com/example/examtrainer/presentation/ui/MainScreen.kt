@@ -40,7 +40,12 @@ import com.example.examtrainer.presentation.navigation.NavRoutes
 
 
 @Composable
-fun TrainTypeButton(text: String, firstIcon: ImageVector, onClick: () -> Unit, modifier: Modifier = Modifier ) {
+fun TrainTypeButton(
+    text: String,
+    firstIcon: ImageVector,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Button(
         onClick = onClick,
         modifier = modifier
@@ -53,7 +58,7 @@ fun TrainTypeButton(text: String, firstIcon: ImageVector, onClick: () -> Unit, m
         shape = RoundedCornerShape(10.dp), // Закругление углов
         elevation = ButtonDefaults.buttonElevation(4.dp) // Тень
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -68,7 +73,7 @@ fun TrainTypeButton(text: String, firstIcon: ImageVector, onClick: () -> Unit, m
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
-                modifier =  Modifier.weight(1f),
+                modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Start
             )
             Icon(
@@ -117,13 +122,15 @@ fun MainScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(50.dp, Alignment.CenterVertically)
         ) {
             StatisticWidget(
-                onClick = { navController.navigate(NavRoutes.TRAINING_ROOT) {
-                    launchSingleTop = true
-                } }
+                onClick = {
+                    navController.navigate(NavRoutes.TRAINING_ROOT) {
+                        launchSingleTop = true
+                    }
+                }
             )
 
             // Кнопка для выбора экзамена
-            Box (
+            Box(
                 modifier = Modifier
                     .width(275.dp)
                     .wrapContentHeight(Alignment.Top),
@@ -137,7 +144,7 @@ fun MainScreen(navController: NavController) {
                         contentColor = Color.White   // Цвет текста
                     )
                 ) {
-                    Row (
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -172,7 +179,8 @@ fun MainScreen(navController: NavController) {
                                 Text(
                                     text = exam.name,
                                     style = MaterialTheme.typography.labelLarge
-                                )},
+                                )
+                            },
                             onClick = {
                                 viewModel.selectExam(exam)
                                 isDropdownExpanded = false
@@ -182,45 +190,45 @@ fun MainScreen(navController: NavController) {
                 }
             }
 
-                TrainTypeButton(
-                    firstIcon = Icons.Filled.AutoStories,
-                    onClick = {
-                        navController.navigate(NavRoutes.TRAINING_ROOT) {
-                            launchSingleTop = true
-                        }
-                    },
-                    text = "Теория"
-                )
+            TrainTypeButton(
+                firstIcon = Icons.Filled.AutoStories,
+                onClick = {
+                    navController.navigate(NavRoutes.THEORY_ROOT) {
+                        launchSingleTop = true
+                    }
+                },
+                text = "Теория"
+            )
 
-                TrainTypeButton(
-                    firstIcon = Icons.Filled.NotificationImportant,
-                    onClick = {
-                        navController.navigate("exam-root") {
-                            launchSingleTop = true
-                        }
-                    },
-                    text = "Экзамен",
-                )
+            TrainTypeButton(
+                firstIcon = Icons.Filled.NotificationImportant,
+                onClick = {
+                    navController.navigate("exam-root") {
+                        launchSingleTop = true
+                    }
+                },
+                text = "Экзамен",
+            )
 
-                TrainTypeButton(
-                    firstIcon = Icons.Filled.School,
-                    onClick = {
-                        navController.navigate(NavRoutes.TRAINING_ROOT) {
-                            launchSingleTop = true
-                        }
-                    },
-                    text = "Тренировка"
-                )
+            TrainTypeButton(
+                firstIcon = Icons.Filled.School,
+                onClick = {
+                    navController.navigate(NavRoutes.TRAINING_ROOT) {
+                        launchSingleTop = true
+                    }
+                },
+                text = "Тренировка"
+            )
 
-                TrainTypeButton(
-                    firstIcon = Icons.Filled.ChecklistRtl,
-                    onClick = {
-                        navController.navigate(NavRoutes.TRAINING_ROOT) {
-                            launchSingleTop = true
-                        }
-                    },
-                    text = "По темам",
-                )
+            TrainTypeButton(
+                firstIcon = Icons.Filled.ChecklistRtl,
+                onClick = {
+                    navController.navigate(NavRoutes.TRAINING_ROOT) {
+                        launchSingleTop = true
+                    }
+                },
+                text = "По темам",
+            )
         }
     }
 }

@@ -20,7 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AnswersVariants(answers: List<String>, onSelectAnswer: (String) -> Unit, buttonBgColor: (String) -> Color) {
+fun AnswersVariants(
+    answers: List<String>,
+    onSelectAnswer: (String) -> Unit,
+    buttonBgColor: (String) -> Color
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -48,6 +52,7 @@ fun AnswersVariants(answers: List<String>, onSelectAnswer: (String) -> Unit, but
                     Text(
                         text = "${variantIndex+1}. $answer"
                     )
+
                 }
             }
         }
