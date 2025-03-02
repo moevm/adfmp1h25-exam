@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
@@ -27,12 +25,12 @@ fun AnswersVariants(answers: List<String>, onSelectAnswer: (String) -> Unit, but
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        answers.forEachIndexed() { variantIndex, answer ->
+        answers.forEachIndexed { variantIndex, answer ->
             Button(
                 onClick = { onSelectAnswer(answer) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp),
+                    .sizeIn(minHeight = 60.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = buttonBgColor(answer),
                     contentColor = Color.Black
@@ -42,11 +40,14 @@ fun AnswersVariants(answers: List<String>, onSelectAnswer: (String) -> Unit, but
             ) {
                 Row(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxWidth()
+                        .padding(vertical=10.dp, horizontal=5.dp),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("${variantIndex+1}. ${answer}")
+                    Text(
+                        text = "${variantIndex+1}. $answer"
+                    )
                 }
             }
         }
@@ -55,18 +56,19 @@ fun AnswersVariants(answers: List<String>, onSelectAnswer: (String) -> Unit, but
 
 @Composable
 fun HintComponent(hintText: String, isHintUsed: Boolean) {
-    Box(
-        modifier = Modifier
-            .alpha(if (!isHintUsed) 0f else 1f)
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
-    ) {
-        Text(
+    if (isHintUsed) {
+        Box(
             modifier = Modifier
-                .padding(16.dp),
-            text = hintText,
-            style = MaterialTheme.typography.bodySmall
-        )
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.tertiaryContainer)
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(16.dp),
+                text = hintText,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }
 
