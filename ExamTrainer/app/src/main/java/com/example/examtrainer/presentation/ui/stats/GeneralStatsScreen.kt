@@ -18,9 +18,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.FactCheck
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.ListAlt
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.Topic
@@ -88,13 +91,13 @@ fun GeneralStatsScreen(navController: NavController) {
         )
 
         StatItem(
-            icon = Icons.Default.ListAlt, // Иконка для тем
+            icon = Icons.Default.Checklist, // Иконка для тем
             title = "Прошли тем",
             value = "5/10"
         )
 
         StatItem(
-            icon = Icons.Default.Quiz, // Иконка для вопросов
+            icon = Icons.Default.QuestionMark, // Иконка для вопросов
             title = "Решили вопросов",
             value = "30/300"
         )
@@ -106,14 +109,14 @@ fun GeneralStatsScreen(navController: NavController) {
         )
 
         StatItem(
-            icon = Icons.Default.FitnessCenter, // Иконка для тренировок
+            icon = Icons.Default.FactCheck, // Иконка для тренировок
             title = "Прошли тренировок",
             value = "100"
         )
 
         // Кликабельная плашка для изученности тем
         ClickableStatItem(
-            icon = Icons.Default.Topic, // Иконка для тем
+            icon = Icons.Default.FactCheck, // Иконка для тем
             title = "Изученность тем",
             onClick = { } //TODO
         )
