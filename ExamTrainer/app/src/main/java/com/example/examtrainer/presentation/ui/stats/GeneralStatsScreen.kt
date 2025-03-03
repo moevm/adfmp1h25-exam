@@ -2,6 +2,7 @@
 
 package com.example.examtrainer.presentation.ui.stats
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -31,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -38,28 +41,35 @@ import com.example.examtrainer.presentation.navigation.NavRoutes
 
 @Composable
 fun GeneralStatsScreen(navController: NavController) {
+
+    val scrollState = rememberScrollState()
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
             .verticalScroll(rememberScrollState())
+            .background(MaterialTheme.colorScheme.background)
     ) {
         // Верхняя панель с кнопкой назад
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(top = 24.dp, start = 16.dp, end = 16.dp)
                 .clickable { navController.navigate(NavRoutes.MAIN) }
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Назад",
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "Главный экран",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -107,16 +117,25 @@ fun GeneralStatsScreen(navController: NavController) {
             title = "Изученность тем",
             onClick = { } //TODO
         )
+
+        // Нижний спейсер для заполнения пространства
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
 @Composable
 private fun StatItem(icon: ImageVector, title: String, value: String) {
+
+    val contentColor = MaterialTheme.colorScheme.primary
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer, // Фон не кликабельных плашек
+            contentColor = contentColor
+        )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -125,7 +144,7 @@ private fun StatItem(icon: ImageVector, title: String, value: String) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = contentColor,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -133,11 +152,12 @@ private fun StatItem(icon: ImageVector, title: String, value: String) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = contentColor.copy(alpha = 0.8f)
                 )
                 Text(
                     text = value,
                     style = MaterialTheme.typography.headlineSmall,
+                    color = contentColor,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
@@ -152,7 +172,10 @@ private fun ClickableStatItem(icon: ImageVector, title: String, onClick: () -> U
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer, // Фон кликабельной плашки
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer // Цвет контента
+        )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
