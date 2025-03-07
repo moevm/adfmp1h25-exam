@@ -12,12 +12,9 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,92 +53,101 @@ val topics = listOf(
 )
 
 @Composable
-fun TopicsStudyStatsScreen(navController: NavController){
+fun TopicsStudyStatsScreen(navController: NavController) {
     var sortAscending by remember { mutableStateOf(true) }
-    val sortedTopics by remember(sortAscending) {
+    var isSortedByProgress by remember { mutableStateOf(false) } // Флаг сортировки по прогрессу
+
+    val initialSortedTopics = remember { topics.sortedBy { it.name } } // Начальная сортировка по имени
+    val sortedTopics by remember(sortAscending, isSortedByProgress) {
         derivedStateOf {
-            if (sortAscending) {
-                topics.sortedBy { it.progress }
+            if (isSortedByProgress) {
+                if (sortAscending) {
+                    topics.sortedBy { it.progress }
+                } else {
+                    topics.sortedByDescending { it.progress }
+                }
             } else {
-                topics.sortedByDescending { it.progress }
+                initialSortedTopics
             }
         }
     }
 
-    // Находим max и min значения прогресса
     val maxProgress = remember(sortedTopics) { sortedTopics.maxOfOrNull { it.progress } ?: 0 }
     val minProgress = remember(sortedTopics) { sortedTopics.minOfOrNull { it.progress } ?: 0 }
-
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
-            .verticalScroll(rememberScrollState())
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Верхняя панель с кнопкой назад
+        // Верхняя панель
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp)
                 .clickable { navController.navigate(NavRoutes.STATS_GENERAL) }
-        ){
+        ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Назад",
                 tint = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(Modifier.width(8.dp))
             Text(
                 text = "Общая статистика",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
         }
-        }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    ) {
-        Text(
-            text = "Изученность тем",
-            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f)
-        )
 
-        IconButton(onClick = { sortAscending = !sortAscending }) {
-            Icon(
-                imageVector = if (sortAscending) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
-                contentDescription = "Сортировка"
+        // Заголовок и кнопка сортировки
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = "Изученность тем",
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier.weight(1f)
             )
+                        IconButton(onClick = {
+                    isSortedByProgress = !isSortedByProgress
+                    if (isSortedByProgress) sortAscending = !sortAscending
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.SwapVert,
+                        contentDescription = "Сортировка",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
         }
-    }
-    // Список тем
-    LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-        this.items(
-            items = sortedTopics,
-            key = { it.name }
-        ) { topic ->
-            TopicRow(
-                topic = topic,
-                isMax = topic.progress == maxProgress,
-                isMin = topic.progress == minProgress
-            )
+
+        // Список тем
+        LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+            items(items = sortedTopics, key = { it.name }) { topic ->
+                val backgroundColor = when {
+                    topic.progress == maxProgress -> MaterialTheme.colorScheme.primaryContainer
+                    topic.progress == minProgress -> MaterialTheme.colorScheme.errorContainer
+                    else -> MaterialTheme.colorScheme.background
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(backgroundColor)
+                ) {
+                    TopicRow(topic = topic)
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun TopicRow(topic: Topic, isMax: Boolean, isMin: Boolean) {
-    val textColor = when {
-        isMax -> MaterialTheme.colorScheme.surface
-        isMin -> MaterialTheme.colorScheme.error
-        else -> MaterialTheme.colorScheme.onBackground
-    }
-
+private fun TopicRow(topic: Topic) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -155,7 +161,6 @@ private fun TopicRow(topic: Topic, isMax: Boolean, isMin: Boolean) {
         )
         Text(
             text = "${topic.progress}%",
-            color = textColor,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium
         )
