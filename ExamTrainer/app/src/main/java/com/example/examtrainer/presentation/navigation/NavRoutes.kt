@@ -16,4 +16,5 @@ object NavRoutes {
     const val EXAM_RESULT = "exam-result"
     const val STATS_ROOT = "stats-root"
     const val STATS_GENERAL = "stats-general"
+    const val STATS_TOPICS = "stats-topics"
 }

@@ -14,6 +14,7 @@ import com.example.examtrainer.presentation.ui.exercise.training.TrainingQuestio
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingResultScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingStartScreen
 import com.example.examtrainer.presentation.ui.stats.GeneralStatsScreen
+import com.example.examtrainer.presentation.ui.stats.TopicsStudyStatsScreen
 import com.example.examtrainer.presentation.ui.theory.TheoryContentScreen
 import com.example.examtrainer.presentation.ui.theory.TheorySectionsTOCScreen
 
@@ -76,6 +77,9 @@ fun NavGraph() {
         ) {
             composable(NavRoutes.STATS_GENERAL) {
                 GeneralStatsScreen(navController)
+            }
+            composable(NavRoutes.STATS_TOPICS){
+                TopicsStudyStatsScreen(navController)
             }
         }
 }
