@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -66,6 +68,10 @@ fun TopicsStudyStatsScreen(navController: NavController){
         }
     }
 
+    // Находим max и min значения прогресса
+    val maxProgress = remember(sortedTopics) { sortedTopics.maxOfOrNull { it.progress } ?: 0 }
+    val minProgress = remember(sortedTopics) { sortedTopics.minOfOrNull { it.progress } ?: 0 }
+
 
     Column(
         modifier = Modifier
@@ -112,5 +118,46 @@ fun TopicsStudyStatsScreen(navController: NavController){
                 contentDescription = "Сортировка"
             )
         }
+    }
+    // Список тем
+    LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+        this.items(
+            items = sortedTopics,
+            key = { it.name }
+        ) { topic ->
+            TopicRow(
+                topic = topic,
+                isMax = topic.progress == maxProgress,
+                isMin = topic.progress == minProgress
+            )
+        }
+    }
+}
+
+@Composable
+private fun TopicRow(topic: Topic, isMax: Boolean, isMin: Boolean) {
+    val textColor = when {
+        isMax -> MaterialTheme.colorScheme.surface
+        isMin -> MaterialTheme.colorScheme.error
+        else -> MaterialTheme.colorScheme.onBackground
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = topic.name,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = "${topic.progress}%",
+            color = textColor,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium
+        )
     }
 }
