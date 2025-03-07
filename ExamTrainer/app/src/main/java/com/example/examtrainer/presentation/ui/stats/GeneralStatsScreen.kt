@@ -118,7 +118,9 @@ fun GeneralStatsScreen(navController: NavController) {
         ClickableStatItem(
             icon = Icons.Default.FactCheck, // Иконка для тем
             title = "Изученность тем",
-            onClick = { } //TODO
+            onClick = { navController.navigate(NavRoutes.STATS_TOPICS){
+                launchSingleTop = true
+            } } //TODO
         )
 
         // Нижний спейсер для заполнения пространства
