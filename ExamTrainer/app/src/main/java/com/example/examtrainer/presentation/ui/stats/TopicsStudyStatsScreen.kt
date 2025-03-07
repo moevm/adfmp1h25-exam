@@ -49,7 +49,6 @@ val topics = listOf(
     Topic("Тема 7", 15),
     Topic("Тема 8", 42),
     Topic("Тема 9", 30),
-    Topic("Тема 10", 11)
 )
 
 @Composable
@@ -57,7 +56,6 @@ fun TopicsStudyStatsScreen(navController: NavController) {
     var sortAscending by remember { mutableStateOf(true) }
     var isSortedByProgress by remember { mutableStateOf(false) } // Флаг сортировки по прогрессу
 
-    val initialSortedTopics = remember { topics.sortedBy { it.name } } // Начальная сортировка по имени
     val sortedTopics by remember(sortAscending, isSortedByProgress) {
         derivedStateOf {
             if (isSortedByProgress) {
@@ -67,7 +65,7 @@ fun TopicsStudyStatsScreen(navController: NavController) {
                     topics.sortedByDescending { it.progress }
                 }
             } else {
-                initialSortedTopics
+               topics
             }
         }
     }
@@ -113,20 +111,23 @@ fun TopicsStudyStatsScreen(navController: NavController) {
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier.weight(1f)
             )
-                        IconButton(onClick = {
-                    isSortedByProgress = !isSortedByProgress
-                    if (isSortedByProgress) sortAscending = !sortAscending
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.SwapVert,
-                        contentDescription = "Сортировка",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
-                }
+            IconButton(onClick = {
+                isSortedByProgress = !isSortedByProgress
+                if (isSortedByProgress) sortAscending = !sortAscending
+            }) {
+                Icon(
+                    imageVector = Icons.Default.SwapVert,
+                    contentDescription = "Сортировка",
+                    tint = if (isSortedByProgress) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
 
         // Список тем
-        LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+        LazyColumn(modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .weight(1f)) {
             items(items = sortedTopics, key = { it.name }) { topic ->
                 val backgroundColor = when {
                     topic.progress == maxProgress -> MaterialTheme.colorScheme.primaryContainer
