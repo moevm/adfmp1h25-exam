@@ -1,4 +1,4 @@
-package com.example.examtrainer.presentation.ui.theory
+package com.example.examtrainer.presentation.ui
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.examtrainer.presentation.ui.CommonHeader
 
 @Composable
 fun TOC(
