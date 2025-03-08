@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
@@ -106,47 +108,54 @@ fun TrainingQuestionScreen(navController: NavController) {
             onClickHint = { viewModel.useHint() }
         )
 
-        // Область ответов
-        Column(
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 30.dp, bottom = 20.dp),
-
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .weight(1f)
         ) {
-            AnswersVariants(
-                answers = questions[index].answers,
-                onSelectAnswer = { answer -> viewModel.selectAnswer(answer) },
-                buttonBgColor = buttonBgColor
-            )
-
-            HintComponent(questions[index].hint, isHintUsed)
-
-            if (isAnswerConfirmed) {
-                NextButton(
-                    text = "Далее",
-                    onClick = {
-                        if (index < questions.size - 1)
-                            viewModel.nextQuestion()
-                        else {
-                            viewModel.stopTraining()
-                            navController.navigate(NavRoutes.TRAINING_RESULT) {
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AnswersVariants(
+                    answers = questions[index].answers,
+                    onSelectAnswer = { answer -> viewModel.selectAnswer(answer) },
+                    buttonBgColor = buttonBgColor
                 )
-            } else {
-                ConfirmButton(
-                    text = "Подтвердить",
-                    enabled = selectedAnswer != null,
-                    onClick = {
-                        viewModel.confirmAnswer()
-                    }
-                )
+
+                HintComponent(questions[index].hint, isHintUsed)
             }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        if (isAnswerConfirmed) {
+            NextButton(
+                text = "Далее",
+                onClick = {
+                    if (index < questions.size - 1)
+                        viewModel.nextQuestion()
+                    else {
+                        viewModel.stopTraining()
+                        navController.navigate(NavRoutes.TRAINING_RESULT, {
+                            launchSingleTop = true
+                            restoreState = true
+                        })
+                    }
+                }
+            )
+        } else {
+            ConfirmButton(
+                text = "Подтвердить",
+                enabled = selectedAnswer != null,
+                onClick = {
+                    viewModel.confirmAnswer()
+                }
+            )
         }
     }
 }
@@ -256,8 +265,7 @@ fun QuestionComponent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.LightGray)
-                .padding(top = 10.dp, start = 10.dp),
+                .padding(top=10.dp, start = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -266,12 +274,21 @@ fun QuestionComponent(
                 style = MaterialTheme.typography.labelLarge,
             )
         }
-        Text(text = questionText, fontSize = 20.sp, modifier = Modifier.padding(8.dp))
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Text(
+                text = questionText,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.LightGray)
-                .padding(bottom = 10.dp, end = 10.dp),
+                .padding(bottom=10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
