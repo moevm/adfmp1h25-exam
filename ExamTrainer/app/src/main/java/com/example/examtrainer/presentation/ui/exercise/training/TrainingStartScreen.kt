@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -14,12 +16,22 @@ import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
+import com.example.examtrainer.presentation.viewmodel.TrainingTOCViewModel
 import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
 
 @Composable
 fun TrainingStartScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
+    val tocViewModel: TrainingTOCViewModel = viewModel(backStackEntry)
     val viewModel: TrainingViewModel = viewModel(backStackEntry)
+
+    val chapterQuestions by tocViewModel.chapterQuestions.collectAsState()
+    val currentChapterIdx by tocViewModel.currentChapterIdx.collectAsState()
+
+    if (currentChapterIdx >= 0) {
+        val questions = chapterQuestions[currentChapterIdx].questions;
+        viewModel.loadQuestions(questions)
+    }
 
     Column(
         modifier = Modifier
