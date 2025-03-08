@@ -2,6 +2,7 @@ package com.example.examtrainer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.examtrainer.data.local.TheoryRepository
 import com.example.examtrainer.domain.model.Question
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class TrainingViewModel : ViewModel() {
+    private val _repo: TheoryRepository = TheoryRepository()
+
     // Список вопросов
     private val _questions = MutableStateFlow<List<Question>>(emptyList())
     val questions: StateFlow<List<Question>> = _questions
@@ -42,7 +45,11 @@ class TrainingViewModel : ViewModel() {
     val wrongAnswersCount: StateFlow<Int> = _wrongAnswersCount
 
     init {
-        loadQuestions() // Загружаем вопросы
+        loadData()
+    }
+
+    fun loadQuestions(questions: List<Question>) {
+        _questions.value = questions.shuffled()
     }
 
     fun startTraining() {
@@ -100,12 +107,11 @@ class TrainingViewModel : ViewModel() {
         timerJob?.cancel()
     }
 
-    private fun loadQuestions() {
-        _questions.value = listOf(
-            Question("Что такое Kotlin?", listOf("Язык", "Фреймворк", "БД", "ОС"), "Язык", "подсказка: Язык"),
-            Question("Android основан на?", listOf("Windows", "Linux", "macOS", "DOS"), "Linux", "подсказка: Linyx")
-        )
+    private fun loadData() {
+        val questions = _repo.getChapters()
+            .map { c -> c.questions }
+            .filter { q -> q.isNotEmpty() }
+            .flatten()
+        loadQuestions(questions)
     }
 }
-
-
