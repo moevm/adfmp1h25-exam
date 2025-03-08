@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
+import com.example.examtrainer.presentation.ui.TOC
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.TheoryViewModel
 
@@ -33,5 +34,3 @@ fun TheorySectionsTOCScreen(navController: NavController) {
         }
     )
 }
-
-
