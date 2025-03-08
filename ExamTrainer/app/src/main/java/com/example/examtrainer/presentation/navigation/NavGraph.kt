@@ -13,8 +13,10 @@ import com.example.examtrainer.presentation.ui.theory.TheoryChaptersTOCScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingResultScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingStartScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingTOCScreen
 import com.example.examtrainer.presentation.ui.theory.TheoryContentScreen
 import com.example.examtrainer.presentation.ui.theory.TheorySectionsTOCScreen
+import com.example.examtrainer.presentation.viewmodel.TrainingTOCViewModel
 
 @Composable
 fun NavGraph() {
@@ -28,9 +30,12 @@ fun NavGraph() {
             MainScreen(navController)
         }
         navigation(
-            startDestination = NavRoutes.TRAINING_START,
+            startDestination = NavRoutes.TRAINING_CHAPTERS,
             route = NavRoutes.TRAINING_ROOT
         ) {
+            composable(NavRoutes.TRAINING_CHAPTERS) {
+                TrainingTOCScreen(navController)
+            }
             composable(NavRoutes.TRAINING_START) {
                 TrainingStartScreen(navController)
             }

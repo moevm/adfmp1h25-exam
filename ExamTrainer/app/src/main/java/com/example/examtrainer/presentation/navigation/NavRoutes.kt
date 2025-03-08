@@ -7,6 +7,7 @@ object NavRoutes {
     const val THEORY_SECTIONS = "theory-subsections"
     const val THEORY_CONTENT = "theory-content"
     const val TRAINING_ROOT = "training-root"
+    const val TRAINING_CHAPTERS = "training-chapters"
     const val TRAINING_START = "training-start"
     const val TRAINING_QUESTION = "training-question"
     const val TRAINING_RESULT = "training-result"
