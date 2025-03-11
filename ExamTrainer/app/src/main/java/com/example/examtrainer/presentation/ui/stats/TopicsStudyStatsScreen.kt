@@ -34,34 +34,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.domain.model.Topic
 import com.example.examtrainer.presentation.navigation.NavRoutes
-import com.example.examtrainer.presentation.viewmodel.MainScreenViewModel
 import com.example.examtrainer.presentation.viewmodel.StatsViewModel
-
-// Data class для тем
-//data class Topic(
-//    val name: String,
-//    val progress: Int
-//)
-//
-//// Хардкоженный список тем
-//val topics = listOf(
-//    Topic("Тема 1", 89),
-//    Topic("Тема 2", 20),
-//    Topic("Тема 3", 79),
-//    Topic("Тема 4", 50),
-//    Topic("Тема 5", 61),
-//    Topic("Тема 6", 5),
-//    Topic("Тема 7", 15),
-//    Topic("Тема 8", 42),
-//    Topic("Тема 9", 30),
-//)
 enum class SortState { NONE, DESCENDING, ASCENDING }
 
 @Composable
 fun TopicsStudyStatsScreen(navController: NavController) {
     val viewModel: StatsViewModel = viewModel()
-//    var sortAscending by remember { mutableStateOf(true) }
-//    var isSortedByProgress by remember { mutableStateOf(false) } // Флаг сортировки по прогрессу
 
 
     var sortState by remember { mutableStateOf(SortState.NONE) }
@@ -69,19 +47,6 @@ fun TopicsStudyStatsScreen(navController: NavController) {
 
     viewModel.load_topics()
 
-//    val sortedTopics by remember(sortAscending, isSortedByProgress) {
-//        derivedStateOf {
-//            if (isSortedByProgress) {
-//                if (sortAscending) {
-//                    viewModel._topics.value.sortedBy { it.progress }
-//                } else {
-//                    viewModel._topics.value.sortedByDescending { it.progress }
-//                }
-//            } else {
-//                viewModel._topics.value
-//            }
-//        }
-//    }
     val sortedTopics by remember(sortState) {
         derivedStateOf {
             when (sortState) {
