@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
+import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.viewmodel.StatsViewModel
 
 @Composable
@@ -59,25 +60,7 @@ fun GeneralStatsScreen(navController: NavController) {
             .verticalScroll(rememberScrollState())
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Верхняя панель с кнопкой назад
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(top = 24.dp, start = 16.dp, end = 16.dp)
-                .clickable { navController.navigate(NavRoutes.MAIN) }
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Назад",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "Главный экран",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
+        CommonHeader("Главный экран") { }
 
         // Заголовок
         Text(

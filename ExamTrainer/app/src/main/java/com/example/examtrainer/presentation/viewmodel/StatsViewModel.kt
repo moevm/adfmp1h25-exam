@@ -44,32 +44,32 @@ class StatsViewModel: ViewModel(){
 
     fun load_general_stats(){
         viewModelScope.launch {
-            _general_stats.value?.readed_chapt = 3
-            _general_stats.value?.all_chapt = 5
-            _general_stats.value?.readed_topics = 5
-            _general_stats.value?.all_topics = 10
-            _general_stats.value?.answer_questions = 30
-            _general_stats.value?.all_questions = 300
-            _general_stats.value?.pass_exams = 3
-            _general_stats.value?.all_exams = 10
-            _general_stats.value?.training_count = 100
+            _general_stats.value.readed_chapt = 3
+            _general_stats.value.all_chapt = 5
+            _general_stats.value.readed_topics = 5
+            _general_stats.value.all_topics = 10
+            _general_stats.value.answer_questions = 30
+            _general_stats.value.all_questions = 300
+            _general_stats.value.pass_exams = 3
+            _general_stats.value.all_exams = 10
+            _general_stats.value.training_count = 100
         }
     }
 
     fun get_chapt(): String{
-        return _general_stats.value?.readed_chapt.toString() + "/"+_general_stats.value?.all_chapt.toString()
+        return _general_stats.value.readed_chapt.toString() + "/"+_general_stats.value.all_chapt.toString()
     }
     fun get_topic(): String{
-        return _general_stats.value?.readed_topics.toString() + "/"+_general_stats.value?.all_topics.toString()
+        return _general_stats.value.readed_topics.toString() + "/"+_general_stats.value.all_topics.toString()
     }
     fun get_questions(): String{
-        return _general_stats.value?.answer_questions.toString() + "/"+_general_stats.value?.answer_questions.toString()
+        return _general_stats.value.answer_questions.toString() + "/"+_general_stats.value.answer_questions.toString()
     }
     fun get_exams(): String{
-        return _general_stats.value?.pass_exams.toString() + "/"+_general_stats.value?.all_exams.toString()
+        return _general_stats.value.pass_exams.toString() + "/"+_general_stats.value.all_exams.toString()
     }
     fun get_trainings(): String{
-        return _general_stats.value?.training_count.toString()
+        return _general_stats.value.training_count.toString()
     }
 
 

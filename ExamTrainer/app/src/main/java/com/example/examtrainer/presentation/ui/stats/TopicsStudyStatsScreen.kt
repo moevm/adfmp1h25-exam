@@ -34,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.domain.model.Topic
 import com.example.examtrainer.presentation.navigation.NavRoutes
+import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.viewmodel.StatsViewModel
 enum class SortState { NONE, DESCENDING, ASCENDING }
 
@@ -66,25 +67,7 @@ fun TopicsStudyStatsScreen(navController: NavController) {
             .systemBarsPadding()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Верхняя панель
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(top = 24.dp, start = 16.dp, end = 16.dp)
-                .clickable { navController.navigate(NavRoutes.STATS_GENERAL) }
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Назад",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                text = "Общая статистика",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
+        CommonHeader("Общая статистика") { }
 
         // Заголовок и кнопка сортировки
         Row(
