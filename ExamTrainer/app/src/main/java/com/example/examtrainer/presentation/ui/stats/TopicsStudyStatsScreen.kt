@@ -20,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,43 +30,64 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.examtrainer.domain.model.Topic
 import com.example.examtrainer.presentation.navigation.NavRoutes
+import com.example.examtrainer.presentation.viewmodel.MainScreenViewModel
+import com.example.examtrainer.presentation.viewmodel.StatsViewModel
 
 // Data class для тем
-data class Topic(
-    val name: String,
-    val progress: Int
-)
-
-// Хардкоженный список тем
-val topics = listOf(
-    Topic("Тема 1", 89),
-    Topic("Тема 2", 20),
-    Topic("Тема 3", 79),
-    Topic("Тема 4", 50),
-    Topic("Тема 5", 61),
-    Topic("Тема 6", 5),
-    Topic("Тема 7", 15),
-    Topic("Тема 8", 42),
-    Topic("Тема 9", 30),
-)
+//data class Topic(
+//    val name: String,
+//    val progress: Int
+//)
+//
+//// Хардкоженный список тем
+//val topics = listOf(
+//    Topic("Тема 1", 89),
+//    Topic("Тема 2", 20),
+//    Topic("Тема 3", 79),
+//    Topic("Тема 4", 50),
+//    Topic("Тема 5", 61),
+//    Topic("Тема 6", 5),
+//    Topic("Тема 7", 15),
+//    Topic("Тема 8", 42),
+//    Topic("Тема 9", 30),
+//)
+enum class SortState { NONE, DESCENDING, ASCENDING }
 
 @Composable
 fun TopicsStudyStatsScreen(navController: NavController) {
-    var sortAscending by remember { mutableStateOf(true) }
-    var isSortedByProgress by remember { mutableStateOf(false) } // Флаг сортировки по прогрессу
+    val viewModel: StatsViewModel = viewModel()
+//    var sortAscending by remember { mutableStateOf(true) }
+//    var isSortedByProgress by remember { mutableStateOf(false) } // Флаг сортировки по прогрессу
 
-    val sortedTopics by remember(sortAscending, isSortedByProgress) {
+
+    var sortState by remember { mutableStateOf(SortState.NONE) }
+
+
+    viewModel.load_topics()
+
+//    val sortedTopics by remember(sortAscending, isSortedByProgress) {
+//        derivedStateOf {
+//            if (isSortedByProgress) {
+//                if (sortAscending) {
+//                    viewModel._topics.value.sortedBy { it.progress }
+//                } else {
+//                    viewModel._topics.value.sortedByDescending { it.progress }
+//                }
+//            } else {
+//                viewModel._topics.value
+//            }
+//        }
+//    }
+    val sortedTopics by remember(sortState) {
         derivedStateOf {
-            if (isSortedByProgress) {
-                if (sortAscending) {
-                    topics.sortedBy { it.progress }
-                } else {
-                    topics.sortedByDescending { it.progress }
-                }
-            } else {
-               topics
+            when (sortState) {
+                SortState.NONE -> viewModel._topics.value // Нет сортировки
+                SortState.DESCENDING -> viewModel._topics.value.sortedByDescending { it.progress }
+                SortState.ASCENDING -> viewModel._topics.value.sortedBy { it.progress }
             }
         }
     }
@@ -112,14 +134,16 @@ fun TopicsStudyStatsScreen(navController: NavController) {
                 modifier = Modifier.weight(1f)
             )
             IconButton(onClick = {
-                isSortedByProgress = !isSortedByProgress
-                if (isSortedByProgress) sortAscending = !sortAscending
+                sortState = when (sortState) {
+                    SortState.NONE -> SortState.DESCENDING
+                    SortState.DESCENDING -> SortState.ASCENDING
+                    SortState.ASCENDING -> SortState.NONE
+                }
             }) {
                 Icon(
                     imageVector = Icons.Default.SwapVert,
                     contentDescription = "Сортировка",
-                    tint = if (isSortedByProgress) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onBackground
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
