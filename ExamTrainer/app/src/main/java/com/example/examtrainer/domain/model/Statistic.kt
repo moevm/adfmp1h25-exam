@@ -1,5 +1,7 @@
 package com.example.examtrainer.domain.model
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 // Data class для тем
 data class Topic(
     val name: String,

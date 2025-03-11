@@ -51,7 +51,7 @@ fun GeneralStatsScreen(navController: NavController) {
     val scrollState = rememberScrollState()
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-
+    viewModel.load_general_stats()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -90,31 +90,31 @@ fun GeneralStatsScreen(navController: NavController) {
         StatItem(
             icon = Icons.Default.Book, // Иконка для глав
             title = "Прочитали глав",
-            value = "3/5"
+            value = viewModel.get_chapt()
         )
 
         StatItem(
             icon = Icons.Default.Checklist, // Иконка для тем
             title = "Прошли тем",
-            value = "5/10"
+            value = viewModel.get_topic()
         )
 
         StatItem(
             icon = Icons.Default.QuestionMark, // Иконка для вопросов
             title = "Решили вопросов",
-            value = "30/300"
+            value = viewModel.get_questions()
         )
 
         StatItem(
             icon = Icons.Default.School, // Иконка для экзаменов
             title = "Сдали экзаменов",
-            value = "3/10"
+            value = viewModel.get_exams()
         )
 
         StatItem(
             icon = Icons.Default.FactCheck, // Иконка для тренировок
             title = "Прошли тренировок",
-            value = "100"
+            value = viewModel.get_trainings()
         )
 
         // Кликабельная плашка для изученности тем
@@ -123,7 +123,7 @@ fun GeneralStatsScreen(navController: NavController) {
             title = "Изученность тем",
             onClick = { navController.navigate(NavRoutes.STATS_TOPICS){
                 launchSingleTop = true
-            } } //TODO
+            } }
         )
 
         // Нижний спейсер для заполнения пространства
