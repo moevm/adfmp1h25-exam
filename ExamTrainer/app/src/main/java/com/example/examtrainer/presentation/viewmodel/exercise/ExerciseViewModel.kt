@@ -115,4 +115,8 @@ abstract class ExerciseViewModel : ViewModel() {
             _isAnswerConfirmed.value = false
         }
     }
+
+    override fun onCleared() {
+        _appLifecycleObserver.removeObserver()
+    }
 }

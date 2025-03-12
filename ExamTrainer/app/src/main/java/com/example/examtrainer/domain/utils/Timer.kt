@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class Timer {
-    private val _elapsedTime = MutableStateFlow(0L);
-    val elapsedTime: StateFlow<Long> = _elapsedTime;
+    private val _elapsedTime = MutableStateFlow(0L)
+    val elapsedTime: StateFlow<Long> = _elapsedTime
 
-    private var timerJob: Job? = null;
+    private var timerJob: Job? = null
 
     fun start(scope: CoroutineScope) {
         timerJob?.cancel()

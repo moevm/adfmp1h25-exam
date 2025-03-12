@@ -29,7 +29,7 @@ fun TrainingStartScreen(navController: NavController) {
     val currentChapterIdx by tocViewModel.currentChapterIdx.collectAsState()
 
     if (currentChapterIdx >= 0) {
-        val questions = chapterQuestions[currentChapterIdx].questions;
+        val questions = chapterQuestions[currentChapterIdx].questions
         viewModel.loadQuestions(questions)
     }
 

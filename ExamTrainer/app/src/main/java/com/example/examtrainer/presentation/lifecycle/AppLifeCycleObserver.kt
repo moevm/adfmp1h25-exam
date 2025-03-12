@@ -1,13 +1,12 @@
 package com.example.examtrainer.presentation.lifecycle
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class AppLifecycleObserver : LifecycleObserver {
+class AppLifecycleObserver : DefaultLifecycleObserver {
 
     private val _isAppInForeground = MutableStateFlow(true)
     val isAppInForeground: StateFlow<Boolean> = _isAppInForeground
@@ -17,16 +16,14 @@ class AppLifecycleObserver : LifecycleObserver {
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onAppBackgrounded() {
-        // Приложение перешло в фоновый режим (свернуто)
-        _isAppInForeground.value = false
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onAppForegrounded() {
+    override fun onStart(owner: LifecycleOwner) {
         // Приложение вернулось на передний план
         _isAppInForeground.value = true
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        // Приложение перешло в фоновый режим (свернуто)
+        _isAppInForeground.value = false
     }
 
     fun removeObserver() {
