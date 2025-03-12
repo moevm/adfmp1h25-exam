@@ -123,7 +123,7 @@ fun MainScreen(navController: NavController) {
         ) {
             StatisticWidget(
                 onClick = {
-                    navController.navigate(NavRoutes.TRAINING_ROOT) {
+                    navController.navigate(NavRoutes.STATS_GENERAL) {
                         launchSingleTop = true
                     }
                 }
