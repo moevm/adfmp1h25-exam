@@ -18,4 +18,6 @@ object NavRoutes {
     const val STATS_ROOT = "stats-root"
     const val STATS_GENERAL = "stats-general"
     const val STATS_TOPICS = "stats-topics"
+    const val INFO_ROOT = "info-root"
+    const val INFO = "info"
 }
