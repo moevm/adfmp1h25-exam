@@ -1,17 +1,18 @@
-package com.example.examtrainer.presentation.viewmodel
+package com.example.examtrainer.presentation.viewmodel.exercise
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.examtrainer.data.local.TheoryRepository
 import com.example.examtrainer.domain.model.Question
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import com.example.examtrainer.domain.utils.Timer
+import com.example.examtrainer.presentation.lifecycle.AppLifecycleObserver
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class TrainingViewModel : ViewModel() {
+abstract class ExerciseViewModel : ViewModel() {
     private val _repo: TheoryRepository = TheoryRepository()
+    private val _appLifecycleObserver = AppLifecycleObserver()
 
     // Список вопросов
     private val _questions = MutableStateFlow<List<Question>>(emptyList())
@@ -21,21 +22,18 @@ class TrainingViewModel : ViewModel() {
     private val _currentIndex = MutableStateFlow(0)
     val currentIndex: StateFlow<Int> = _currentIndex
 
-    private val _isHintUsed = MutableStateFlow<Boolean>(false)
-    val isHintUsed: StateFlow<Boolean> = _isHintUsed
-
     // Выбранный ответ
     private val _selectedAnswer = MutableStateFlow<String?>(null)
     val selectedAnswer: StateFlow<String?> = _selectedAnswer
 
     // Было ли подтверждение
-    private val _isAnswerConfirmed = MutableStateFlow<Boolean>(false)
+    private val _isAnswerConfirmed = MutableStateFlow(false)
     val isAnswerConfirmed: StateFlow<Boolean> = _isAnswerConfirmed
 
     // Таймер
-    private val _elapsedTime = MutableStateFlow(0L) // в секундах
-    val elapsedTime: StateFlow<Long> = _elapsedTime
-    private var timerJob: Job? = null
+    private var isExerciseRunning: Boolean = false
+    private val timer: Timer = Timer()
+    val elapsedTime: StateFlow<Long> = timer.elapsedTime
 
     // Статистика
     private val _correctAnswersCount = MutableStateFlow(0)
@@ -46,25 +44,56 @@ class TrainingViewModel : ViewModel() {
 
     init {
         loadData()
+        observeAppLifecycle()
+    }
+
+    private fun loadData() {
+        val questions = _repo.getChapters()
+            .map { c -> c.questions }
+            .filter { q -> q.isNotEmpty() }
+            .flatten()
+        loadQuestions(questions)
+    }
+
+    private fun observeAppLifecycle() {
+        viewModelScope.launch {
+            _appLifecycleObserver.isAppInForeground.collect { isForeground ->
+                if (isExerciseRunning && isForeground) {
+                    timer.start(viewModelScope) // Возобновляем таймер
+                } else {
+                    timer.stop() // Останавливаем таймер
+                }
+            }
+        }
     }
 
     fun loadQuestions(questions: List<Question>) {
         _questions.value = questions.shuffled()
     }
 
-    fun startTraining() {
-        startTimer()
+    fun startExercise() {
+        isExerciseRunning = true
+        timer.start(viewModelScope)
+    }
+
+    fun stopExercise() {
+        isExerciseRunning = false
+        timer.stop()
+    }
+
+    fun pauseExercise() {
+        timer.stop()
+    }
+
+    fun resumeExercise() {
+        timer.start(viewModelScope)
     }
 
     fun selectAnswer(answer: String) {
         _selectedAnswer.value = answer
     }
 
-    fun useHint() {
-        _isHintUsed.value = true
-    }
-
-    fun confirmAnswer() {
+    open fun confirmAnswer() {
         if (_selectedAnswer.value == null) {
             return
         }
@@ -77,41 +106,17 @@ class TrainingViewModel : ViewModel() {
             }
         }
         _isAnswerConfirmed.value = true
-        _isHintUsed.value = true
     }
 
-    fun nextQuestion() {
+    open fun nextQuestion() {
         if (_currentIndex.value < _questions.value.size - 1) {
             _currentIndex.value += 1
             _selectedAnswer.value = null
             _isAnswerConfirmed.value = false
-            _isHintUsed.value = false
         }
     }
 
-    fun stopTraining() {
-        stopTimer()
-    }
-
-    private fun startTimer() {
-        timerJob?.cancel()
-        timerJob = viewModelScope.launch {
-            while (true) {
-                delay(1000)
-                _elapsedTime.value += 1
-            }
-        }
-    }
-
-    private fun stopTimer() {
-        timerJob?.cancel()
-    }
-
-    private fun loadData() {
-        val questions = _repo.getChapters()
-            .map { c -> c.questions }
-            .filter { q -> q.isNotEmpty() }
-            .flatten()
-        loadQuestions(questions)
+    override fun onCleared() {
+        _appLifecycleObserver.removeObserver()
     }
 }

@@ -1,4 +1,4 @@
-package com.example.examtrainer.presentation.ui
+package com.example.examtrainer.presentation.ui.main
 
 
 import androidx.compose.foundation.background
@@ -26,7 +26,6 @@ import com.example.examtrainer.presentation.viewmodel.MainScreenViewModel
 import androidx.navigation.NavController
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.ChecklistRtl
 import androidx.compose.material.icons.filled.Info
@@ -182,7 +181,6 @@ fun MainScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-//                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             text = selectedExam?.name ?: "Выберите экзамен",

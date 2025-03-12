@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.examtrainer.presentation.ui.MainScreen
+import com.example.examtrainer.presentation.ui.main.MainScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamStartScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamResultScreen
@@ -19,7 +19,6 @@ import com.example.examtrainer.presentation.ui.exercise.training.TrainingTOCScre
 import com.example.examtrainer.presentation.ui.info.InfoScreen
 import com.example.examtrainer.presentation.ui.theory.TheoryContentScreen
 import com.example.examtrainer.presentation.ui.theory.TheorySectionsTOCScreen
-import com.example.examtrainer.presentation.viewmodel.TrainingTOCViewModel
 
 @Composable
 fun NavGraph() {

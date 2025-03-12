@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -110,4 +112,46 @@ fun ConfirmButton(text: String, enabled: Boolean, onClick: () -> Unit) {
             style = MaterialTheme.typography.bodySmall
         )
     }
+}
+
+@Composable
+fun ConfirmExitDialog(
+    titleText: String,
+    text: String,
+    onDismiss: () -> Unit, // Закрытие диалога
+    onConfirm: () -> Unit, // Действие при подтверждении
+) {
+    AlertDialog(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        onDismissRequest = onDismiss, // Закрытие при нажатии вне диалога
+        title = {
+            Text(
+                text = titleText,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                text = text,
+                color = Color.Black
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirm()
+                    onDismiss()
+                }
+            ) {
+                Text("Подтвердить")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = onDismiss
+            ) {
+                Text("Отмена")
+            }
+        }
+    )
 }

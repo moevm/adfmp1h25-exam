@@ -1,4 +1,4 @@
-package com.example.examtrainer.presentation.ui
+package com.example.examtrainer.presentation.ui.main
 
 
 import androidx.compose.foundation.background

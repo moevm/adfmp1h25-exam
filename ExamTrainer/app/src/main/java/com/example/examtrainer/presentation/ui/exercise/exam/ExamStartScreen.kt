@@ -14,7 +14,7 @@ import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
-import com.example.examtrainer.presentation.viewmodel.ExamViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.ExamViewModel
 
 @Composable
 fun ExamStartScreen(navController: NavController) {
@@ -45,7 +45,7 @@ fun ExamStartScreen(navController: NavController) {
                 В ходе решения экзамена Вы не сможете получить подсказку по вопросу или посмотреть результат своего ответа.
             """.trimIndent(),
             onStart = {
-                viewModel.startExam()
+                viewModel.startExercise()
                 navController.navigate(NavRoutes.EXAM_QUESTION) {
                     launchSingleTop = true
                     restoreState = true

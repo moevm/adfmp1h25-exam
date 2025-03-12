@@ -17,7 +17,7 @@ import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.TrainingTOCViewModel
-import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.TrainingViewModel
 
 @Composable
 fun TrainingStartScreen(navController: NavController) {
@@ -29,7 +29,7 @@ fun TrainingStartScreen(navController: NavController) {
     val currentChapterIdx by tocViewModel.currentChapterIdx.collectAsState()
 
     if (currentChapterIdx >= 0) {
-        val questions = chapterQuestions[currentChapterIdx].questions;
+        val questions = chapterQuestions[currentChapterIdx].questions
         viewModel.loadQuestions(questions)
     }
 
@@ -57,7 +57,7 @@ fun TrainingStartScreen(navController: NavController) {
                 В ходе решения экзамена Вы сможете получить подсказку по вопросу и посмотреть результат своего ответа.
             """.trimIndent(),
             onStart = {
-                viewModel.startTraining()
+                viewModel.startExercise()
                 navController.navigate(NavRoutes.TRAINING_QUESTION) {
                     launchSingleTop = true
                     restoreState = true
