@@ -1,8 +1,7 @@
-package com.example.examtrainer.presentation.viewmodel.exercise;
+package com.example.examtrainer.presentation.viewmodel.exercise
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,19 +15,19 @@ class ExamViewModel : ExerciseViewModel() {
     val limitedTime: StateFlow<Long> = _limitedTime
 
     // Проверка на приближение к ограничению по времени
-    private val _isCloseToEnd = MutableStateFlow<Boolean>(false)
+    private val _isCloseToEnd = MutableStateFlow(false)
     val isCloseToEnd: StateFlow<Boolean> = _isCloseToEnd
     private val _closeThreshold: Long = 2 * 60L // 2 минуты
 
     // Проверка на конец экзамена
-    private val _isEnd = MutableStateFlow<Boolean>(false)
+    private val _isEnd = MutableStateFlow(false)
     val isEnd: StateFlow<Boolean> = _isEnd
 
     private val _examThreshold = 0.5
     private val _successThreshold = MutableStateFlow(_examThreshold)
     val successThreshold: StateFlow<Boolean> = combine(
-        _correctAnswersCount,
-        _questions,
+        correctAnswersCount,
+        questions,
         _successThreshold
     ) { correctCount, questionsList, threshold ->
         (correctCount.toDouble() / questionsList.size) >= threshold

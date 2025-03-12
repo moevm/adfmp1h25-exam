@@ -11,35 +11,35 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 abstract class ExerciseViewModel : ViewModel() {
-    protected val _repo: TheoryRepository = TheoryRepository()
-    protected val appLifecycleObserver = AppLifecycleObserver()
+    private val _repo: TheoryRepository = TheoryRepository()
+    private val _appLifecycleObserver = AppLifecycleObserver()
 
     // Список вопросов
-    protected val _questions = MutableStateFlow<List<Question>>(emptyList())
+    private val _questions = MutableStateFlow<List<Question>>(emptyList())
     val questions: StateFlow<List<Question>> = _questions
 
     // Текущий вопрос (по индексу)
-    protected val _currentIndex = MutableStateFlow(0)
+    private val _currentIndex = MutableStateFlow(0)
     val currentIndex: StateFlow<Int> = _currentIndex
 
     // Выбранный ответ
-    protected val _selectedAnswer = MutableStateFlow<String?>(null)
+    private val _selectedAnswer = MutableStateFlow<String?>(null)
     val selectedAnswer: StateFlow<String?> = _selectedAnswer
 
     // Было ли подтверждение
-    protected val _isAnswerConfirmed = MutableStateFlow<Boolean>(false)
+    private val _isAnswerConfirmed = MutableStateFlow(false)
     val isAnswerConfirmed: StateFlow<Boolean> = _isAnswerConfirmed
 
     // Таймер
-    protected var isExerciseRunning: Boolean = false
-    protected val timer: Timer = Timer()
+    private var isExerciseRunning: Boolean = false
+    private val timer: Timer = Timer()
     val elapsedTime: StateFlow<Long> = timer.elapsedTime
 
     // Статистика
-    protected val _correctAnswersCount = MutableStateFlow(0)
+    private val _correctAnswersCount = MutableStateFlow(0)
     val correctAnswersCount: StateFlow<Int> = _correctAnswersCount
 
-    protected val _wrongAnswersCount = MutableStateFlow(0)
+    private val _wrongAnswersCount = MutableStateFlow(0)
     val wrongAnswersCount: StateFlow<Int> = _wrongAnswersCount
 
     init {
@@ -47,7 +47,7 @@ abstract class ExerciseViewModel : ViewModel() {
         observeAppLifecycle()
     }
 
-    protected fun loadData() {
+    private fun loadData() {
         val questions = _repo.getChapters()
             .map { c -> c.questions }
             .filter { q -> q.isNotEmpty() }
@@ -55,9 +55,9 @@ abstract class ExerciseViewModel : ViewModel() {
         loadQuestions(questions)
     }
 
-    protected fun observeAppLifecycle() {
+    private fun observeAppLifecycle() {
         viewModelScope.launch {
-            appLifecycleObserver.isAppInForeground.collect { isForeground ->
+            _appLifecycleObserver.isAppInForeground.collect { isForeground ->
                 if (isExerciseRunning && isForeground) {
                     timer.start(viewModelScope) // Возобновляем таймер
                 } else {
