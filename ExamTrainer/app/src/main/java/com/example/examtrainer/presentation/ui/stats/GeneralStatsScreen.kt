@@ -4,6 +4,7 @@ package com.example.examtrainer.presentation.ui.stats
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,17 +17,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.FactCheck
-import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.ListAlt
 import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.School
-import androidx.compose.material.icons.filled.Topic
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -35,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
@@ -49,24 +46,28 @@ import com.example.examtrainer.presentation.viewmodel.StatsViewModel
 fun GeneralStatsScreen(navController: NavController) {
 
     val viewModel: StatsViewModel = viewModel()
-    val scrollState = rememberScrollState()
     val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
     viewModel.load_general_stats()
     Column(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
             .verticalScroll(rememberScrollState())
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CommonHeader("Главный экран") { }
+        CommonHeader("Главный экран", onClick = {
+            navController.navigate(NavRoutes.MAIN){
+                launchSingleTop = true
+            }
+        })
 
         // Заголовок
         Text(
             text = "За все время вы:",
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         )
 
         // Плашки статистики
@@ -117,7 +118,7 @@ fun GeneralStatsScreen(navController: NavController) {
 @Composable
 private fun StatItem(icon: ImageVector, title: String, value: String) {
 
-    val contentColor = MaterialTheme.colorScheme.primary
+    val contentColor = Color(0, 0, 0)
 
     Card(
         modifier = Modifier
@@ -136,10 +137,14 @@ private fun StatItem(icon: ImageVector, title: String, value: String) {
                 imageVector = icon,
                 contentDescription = null,
                 tint = contentColor,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(35.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyMedium,
@@ -147,9 +152,8 @@ private fun StatItem(icon: ImageVector, title: String, value: String) {
                 )
                 Text(
                     text = value,
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = contentColor,
-                    modifier = Modifier.padding(top = 4.dp)
                 )
             }
         }
@@ -165,7 +169,7 @@ private fun ClickableStatItem(icon: ImageVector, title: String, onClick: () -> U
             .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer, // Фон кликабельной плашки
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer // Цвет контента
+            contentColor = Color(0, 0, 0) // Цвет контента
         )
     ) {
         Row(
@@ -176,19 +180,17 @@ private fun ClickableStatItem(icon: ImageVector, title: String, onClick: () -> U
                 imageVector = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(35.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 modifier = Modifier.weight(1f)
             )
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = "Перейти",
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
         }
     }
