@@ -34,14 +34,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.exercise.AnswersVariants
 import com.example.examtrainer.presentation.ui.exercise.ConfirmButton
+import com.example.examtrainer.presentation.ui.exercise.ConfirmExitDialog
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
-import com.example.examtrainer.presentation.viewmodel.ExamViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.ExamViewModel
 import java.util.Locale
 
 @Composable
@@ -49,6 +53,7 @@ fun ExamQuestionScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
     val viewModel: ExamViewModel = viewModel(backStackEntry)
 
+    var showDialog by remember { mutableStateOf(false) }
     val questions by viewModel.questions.collectAsState()
     val index by viewModel.currentIndex.collectAsState()
     val selectedAnswer by viewModel.selectedAnswer.collectAsState()
@@ -68,11 +73,27 @@ fun ExamQuestionScreen(navController: NavController) {
     }
 
     if (isEnd) {
-        viewModel.stopExam()
+        viewModel.stopExercise()
         navController.navigate(NavRoutes.EXAM_RESULT, {
             launchSingleTop = true
             restoreState = true
         })
+    }
+
+    if (showDialog) {
+        ConfirmExitDialog(
+            titleText = "Внимание",
+            text = "Вы уверенны что хотите закончить экзамен?",
+            onDismiss = {
+                showDialog = false
+                viewModel.resumeExercise()
+            },
+            onConfirm = {
+                navController.navigate(NavRoutes.MAIN) {
+                    launchSingleTop = true
+                }
+            }
+        )
     }
 
     Column(
@@ -86,9 +107,8 @@ fun ExamQuestionScreen(navController: NavController) {
         ExamQuestionScreenHeader(
             backButtonText= "Выход",
             onClick = {
-                navController.navigate(NavRoutes.MAIN) {
-                    launchSingleTop = true // Запуск только одного экземпляра
-                }
+                showDialog = true
+                viewModel.pauseExercise()
             },
             isCloseToEnd = isCloseToEnd,
             time = time,
@@ -125,7 +145,7 @@ fun ExamQuestionScreen(navController: NavController) {
                     if (index < questions.size - 1)
                         viewModel.nextQuestion()
                     else {
-                        viewModel.stopExam()
+                        viewModel.stopExercise()
                         navController.navigate(NavRoutes.EXAM_RESULT, {
                             launchSingleTop = true
                             restoreState = true
@@ -171,7 +191,7 @@ fun ExamQuestionScreenHeader(backButtonText: String, onClick: () -> Unit, isClos
                 .padding(horizontal = 8.dp, vertical = 4.dp)
                 .background(
                     color = if (isCloseToEnd)
-                            MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.65f)
+                            MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.65f)
                             else MaterialTheme.colorScheme.background.copy(alpha = 0f),
                     shape = RoundedCornerShape(5.dp)),
                 contentAlignment = Alignment.Center

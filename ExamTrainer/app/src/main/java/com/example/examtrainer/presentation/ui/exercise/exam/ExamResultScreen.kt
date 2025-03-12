@@ -34,7 +34,7 @@ import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.BackToMainSreenButton
 import com.example.examtrainer.presentation.ui.exercise.ShareButton
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
-import com.example.examtrainer.presentation.viewmodel.ExamViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.ExamViewModel
 import java.util.Locale
 
 @Composable
@@ -154,7 +154,7 @@ fun FailureResultBox(time: Long, questionsCount: Int, wrongAnswersCount: Int, co
         modifier = Modifier
             .fillMaxWidth(.85f)
             .clip(RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.5f))
+            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f))
             .padding(25.dp),
     ) {
         Column(

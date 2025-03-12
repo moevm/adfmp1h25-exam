@@ -29,7 +29,7 @@ import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.BackToMainSreenButton
 import com.example.examtrainer.presentation.ui.exercise.ShareButton
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
-import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.TrainingViewModel
 import java.util.Locale
 
 @Composable
