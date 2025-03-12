@@ -213,7 +213,7 @@ fun MainScreen(navController: NavController) {
             TrainTypeButton(
                 firstIcon = Icons.Filled.School,
                 onClick = {
-                    navController.navigate(NavRoutes.TRAINING_ROOT) {
+                    navController.navigate(NavRoutes.TRAINING_START) {
                         launchSingleTop = true
                     }
                 },

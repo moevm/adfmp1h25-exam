@@ -8,4 +8,5 @@ data class Section(
 data class Chapter(
     val title: String,
     val sections: List<Section>,
+    val questions: List<Question>,
 )
