@@ -26,13 +26,16 @@ import com.example.examtrainer.presentation.viewmodel.MainScreenViewModel
 import androidx.navigation.NavController
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.ChecklistRtl
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.NotificationImportant
 import androidx.compose.material.icons.filled.School
+import androidx.compose.material3.IconButton
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import com.example.examtrainer.domain.model.Exam
@@ -86,6 +89,28 @@ fun TrainTypeButton(
     }
 }
 
+@Composable
+fun InfoHeader(onClick: () -> Unit) {
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 0.dp, horizontal = 30.dp)
+
+    ) {
+        IconButton(
+            onClick = onClick
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Info,
+                contentDescription = "Info",
+                tint = Color.Black,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
 
 @Composable
 fun MainScreen(navController: NavController) {
@@ -112,15 +137,24 @@ fun MainScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.navigationBars),
+            .padding(bottom = 0.dp)
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .windowInsetsPadding(WindowInsets.statusBars),
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(50.dp, Alignment.CenterVertically)
+            verticalArrangement = Arrangement.spacedBy(35.dp)
         ) {
+            InfoHeader(
+                onClick = {
+                    navController.navigate(NavRoutes.INFO_ROOT) {
+                        launchSingleTop = true
+                    }
+                }
+            )
             StatisticWidget(
                 onClick = {
                     navController.navigate(NavRoutes.STATS_GENERAL) {
