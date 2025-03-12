@@ -24,8 +24,6 @@ import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.InfoHeader
 import com.example.examtrainer.presentation.ui.exercise.InfoText
-import com.example.examtrainer.presentation.ui.exercise.StartExerciseButton
-import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
 
 @Composable
 fun InfoScreen(navController: NavController) {
@@ -45,40 +43,50 @@ fun InfoScreen(navController: NavController) {
             }
         )
 
-        Box(
+        InfoBox(
+            headerText = "О приложении",
+            text = "Фичи:\n" +
+                    "-    Теория\n" +
+                    "-    Режим тренировки (решаем рандомные н вопросов из общего пула)\n" +
+                    "-    Режим экзамена (без подсказок и отображения правильности ответов)\n" +
+                    "-    Режим тренировки по темам (решаем вопросы из конкретной темы)\n" +
+                    "-    Статистика\n"
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        InfoBox(
+            headerText = "Разработчики",
+            text = "Шаврин Алексей\n" +
+                    "Кардаш Ярослав\n" +
+                    "Ягодаров Михаил\n" +
+                    "Заика Тимофей"
+        )
+
+    }
+}
+
+@Composable
+fun InfoBox(headerText: String, text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(.85f)
+            .clip(RoundedCornerShape(30.dp))
+            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f))
+            .padding(horizontal = 25.dp, vertical = 10.dp),
+    ) {
+        Column(
             modifier = Modifier
-                .fillMaxWidth(.85f)
-                .clip(RoundedCornerShape(30.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f))
-                .padding(25.dp),
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                InfoHeader(
-                    text = "О приложении"
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                InfoText(
-                    text = "Фичи:\n" +
-                            "-    Теория\n" +
-                            "-    Режим тренировки (решаем рандомные н вопросов из общего пула)\n" +
-                            "-    Режим экзамена (без подсказок и отображения правильности ответов)\n" +
-                            "-    Режим тренировки по темам (решаем вопросы из конкретной темы)\n" +
-                            "-    Статистика\n"
-                )
-                Spacer(modifier = Modifier.height(70.dp))
-                InfoHeader(
-                    text = "Разработчики"
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                InfoText(
-                    text = "Шаврин Алексей\n Кардаш Ярослав\n Ягодаров Михаил\n Заика Тимофей"
-                )
-            }
+            InfoHeader(
+                text = headerText
+            )
+            InfoText(
+                text = text
+            )
         }
     }
 }

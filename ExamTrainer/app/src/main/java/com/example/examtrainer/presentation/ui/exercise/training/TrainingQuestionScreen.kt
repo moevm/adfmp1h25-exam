@@ -35,16 +35,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.exercise.AnswersVariants
 import com.example.examtrainer.presentation.ui.exercise.ConfirmButton
+import com.example.examtrainer.presentation.ui.exercise.ConfirmExitDialog
 import com.example.examtrainer.presentation.ui.exercise.HintComponent
 import com.example.examtrainer.presentation.ui.exercise.NextButton
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
-import com.example.examtrainer.presentation.viewmodel.TrainingViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.TrainingViewModel
 import java.util.Locale
 
 enum class AnswerStatus {
@@ -57,6 +61,7 @@ fun TrainingQuestionScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
     val viewModel: TrainingViewModel = viewModel(backStackEntry)
 
+    var showDialog by remember { mutableStateOf(false) }
     val questions by viewModel.questions.collectAsState()
     val index by viewModel.currentIndex.collectAsState()
     val selectedAnswer by viewModel.selectedAnswer.collectAsState()
@@ -79,6 +84,22 @@ fun TrainingQuestionScreen(navController: NavController) {
         }
     }
 
+    if (showDialog) {
+        ConfirmExitDialog(
+            titleText = "Внимание",
+            text = "Вы уверенны что хотите закончить тренировку?",
+            onDismiss = {
+                showDialog = false
+                viewModel.resumeExercise()
+            },
+            onConfirm = {
+                navController.navigate(NavRoutes.MAIN) {
+                    launchSingleTop = true
+                }
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -90,9 +111,8 @@ fun TrainingQuestionScreen(navController: NavController) {
         QuestionScreenHeader(
             backButtonText = "Выход",
             onClick = {
-                navController.navigate(NavRoutes.MAIN) {
-                    launchSingleTop = true // Запуск только одного экземпляра
-                }
+                showDialog = true
+                viewModel.pauseExercise()
             },
             time = time,
             correctAnswersCount = correctAnswersCount,
@@ -140,7 +160,7 @@ fun TrainingQuestionScreen(navController: NavController) {
                     if (index < questions.size - 1)
                         viewModel.nextQuestion()
                     else {
-                        viewModel.stopTraining()
+                        viewModel.stopExercise()
                         navController.navigate(NavRoutes.TRAINING_RESULT, {
                             launchSingleTop = true
                             restoreState = true
