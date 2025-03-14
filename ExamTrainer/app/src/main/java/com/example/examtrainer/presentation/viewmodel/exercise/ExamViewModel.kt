@@ -1,6 +1,9 @@
 package com.example.examtrainer.presentation.viewmodel.exercise
 
 import androidx.lifecycle.viewModelScope
+import com.example.examtrainer.data.local.ExamRepository
+import com.example.examtrainer.data.local.TheoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -8,8 +11,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ExamViewModel : ExerciseViewModel() {
+
+@HiltViewModel
+class ExamViewModel @Inject constructor(
+    private val examRepository: ExamRepository,
+    private val theoryRepository: TheoryRepository
+) : ExerciseViewModel() {
     // Ограничение по времени
     private val _limitedTime = MutableStateFlow(20 * 60L) // 20 минут
     val limitedTime: StateFlow<Long> = _limitedTime
@@ -39,6 +48,18 @@ class ExamViewModel : ExerciseViewModel() {
 
     init {
         observeTimer()
+        loadData()
+    }
+
+    override fun loadData() {
+        val currentExam = examRepository.getSelectedExam()
+        println(currentExam)
+        // TODO: использовать при загрузке вопросов
+        val questions = theoryRepository.getChapters()
+            .map { c -> c.questions }
+            .filter { q -> q.isNotEmpty() }
+            .flatten()
+        loadQuestions(questions)
     }
 
     private fun observeTimer() {

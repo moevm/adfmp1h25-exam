@@ -3,12 +3,18 @@ package com.example.examtrainer.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.examtrainer.data.local.ExamRepository
 import com.example.examtrainer.domain.model.StatisticData
 import com.example.examtrainer.domain.model.Topic
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class StatsViewModel: ViewModel(){
+@HiltViewModel
+class StatsViewModel @Inject constructor(
+    private val examRepository: ExamRepository
+): ViewModel(){
 
     val _topics = MutableStateFlow<List<Topic>>(emptyList())
     val _general_stats = MutableStateFlow<StatisticData>(

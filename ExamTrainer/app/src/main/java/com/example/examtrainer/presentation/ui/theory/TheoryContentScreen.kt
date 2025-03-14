@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
@@ -31,7 +32,7 @@ import dev.jeziellago.compose.markdowntext.MarkdownText
 @Composable
 fun TheoryContentScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.THEORY_ROOT)
-    val viewModel: TheoryViewModel = viewModel(backStackEntry)
+    val viewModel: TheoryViewModel = hiltViewModel(backStackEntry)
 
     val chapters by viewModel.chapters.collectAsState()
     val currentChapterIdx by viewModel.currentChapterIdx.collectAsState()

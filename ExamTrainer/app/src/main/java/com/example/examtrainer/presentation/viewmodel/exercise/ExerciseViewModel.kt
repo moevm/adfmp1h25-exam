@@ -2,6 +2,7 @@ package com.example.examtrainer.presentation.viewmodel.exercise
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.examtrainer.data.local.ExamRepository
 import com.example.examtrainer.data.local.TheoryRepository
 import com.example.examtrainer.domain.model.Question
 import com.example.examtrainer.domain.utils.Timer
@@ -9,9 +10,9 @@ import com.example.examtrainer.presentation.lifecycle.AppLifecycleObserver
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 abstract class ExerciseViewModel : ViewModel() {
-    private val _repo: TheoryRepository = TheoryRepository()
     private val _appLifecycleObserver = AppLifecycleObserver()
 
     // Список вопросов
@@ -43,17 +44,18 @@ abstract class ExerciseViewModel : ViewModel() {
     val wrongAnswersCount: StateFlow<Int> = _wrongAnswersCount
 
     init {
-        loadData()
         observeAppLifecycle()
     }
 
-    private fun loadData() {
-        val questions = _repo.getChapters()
-            .map { c -> c.questions }
-            .filter { q -> q.isNotEmpty() }
-            .flatten()
-        loadQuestions(questions)
-    }
+    abstract fun loadData()
+
+//    private fun loadData() {
+//        val questions = _repo.getChapters()
+//            .map { c -> c.questions }
+//            .filter { q -> q.isNotEmpty() }
+//            .flatten()
+//        loadQuestions(questions)
+//    }
 
     private fun observeAppLifecycle() {
         viewModelScope.launch {

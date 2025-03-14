@@ -1,14 +1,22 @@
-package com.example.examtrainer.presentation.viewmodel
+package com.example.examtrainer.presentation.viewmodel.exercise
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.examtrainer.data.local.ExamRepository
 import com.example.examtrainer.data.local.TheoryRepository
 import com.example.examtrainer.domain.model.ChapterQuestions
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TrainingTOCViewModel : ViewModel() {
-    private val _repo: TheoryRepository = TheoryRepository()
 
+@HiltViewModel
+class TrainingTOCViewModel @Inject constructor(
+    private val examRepository: ExamRepository,
+    private val theoryRepository: TheoryRepository
+) : ViewModel() {
     private val _chapterQuestions = MutableStateFlow<List<ChapterQuestions>>(emptyList())
     val chapterQuestions: StateFlow<List<ChapterQuestions>> = _chapterQuestions
 
@@ -16,15 +24,20 @@ class TrainingTOCViewModel : ViewModel() {
     val currentChapterIdx: StateFlow<Int> = _currentChapterIdx
 
     init {
+        println("training toc")
         loadData()
     }
 
     fun selectChapter(chapterIdx: Int) {
         _currentChapterIdx.value = chapterIdx
+        println(_currentChapterIdx.value)
     }
 
-    private fun loadData() {
-        _chapterQuestions.value = _repo.getChapters()
+    fun loadData() {
+        val currentExam = examRepository.getSelectedExam()
+        println(currentExam)
+        // TODO: использовать при загрузке вопросов
+        _chapterQuestions.value = theoryRepository.getChapters()
             .map { c ->
                 ChapterQuestions(
                     title = c.title,

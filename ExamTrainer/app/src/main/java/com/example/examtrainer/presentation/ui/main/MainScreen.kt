@@ -112,10 +112,7 @@ fun InfoHeader(onClick: () -> Unit) {
 }
 
 @Composable
-fun MainScreen(navController: NavController) {
-    // Получаем ViewModel
-    val viewModel: MainScreenViewModel = viewModel()
-
+fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
     // Состояние для видимости выпадающего меню
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
@@ -247,6 +244,7 @@ fun MainScreen(navController: NavController) {
                 onClick = {
                     navController.navigate(NavRoutes.TRAINING_START) {
                         launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 text = "Тренировка"
@@ -257,6 +255,7 @@ fun MainScreen(navController: NavController) {
                 onClick = {
                     navController.navigate(NavRoutes.TRAINING_ROOT) {
                         launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 text = "По темам",

@@ -1,12 +1,19 @@
 package com.example.examtrainer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.examtrainer.data.local.ExamRepository
 import com.example.examtrainer.data.local.TheoryRepository
 import com.example.examtrainer.domain.model.Chapter
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class TheoryViewModel : ViewModel() {
+
+@HiltViewModel
+class TheoryViewModel @Inject constructor(
+    private val examRepository: ExamRepository
+) : ViewModel() {
     private val _repo: TheoryRepository = TheoryRepository()
 
     private val _chapters = MutableStateFlow<List<Chapter>>(emptyList())
