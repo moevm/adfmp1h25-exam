@@ -1,24 +1,31 @@
 package com.example.examtrainer.presentation.viewmodel.exercise
 
+import com.example.examtrainer.data.local.ExamRepository
+import com.example.examtrainer.data.local.TheoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class TrainingViewModel : ExerciseViewModel() {
-    // Флаг использованной подсказки
-    private val _isHintUsed = MutableStateFlow<Boolean>(false)
-    val isHintUsed: StateFlow<Boolean> = _isHintUsed
+@HiltViewModel
+class TrainingViewModel @Inject constructor(
+    private val examRepository: ExamRepository,
+    private val theoryRepository: TheoryRepository
+) : BaseTrainingViewModel() {
 
-    fun useHint() {
-        _isHintUsed.value = true
+    init {
+        println("training")
+        loadData()
     }
 
-    override fun confirmAnswer() {
-        super.confirmAnswer()
-        useHint()
-    }
-
-    override fun nextQuestion() {
-        super.nextQuestion()
-        _isHintUsed.value = false
+    override fun loadData() {
+        val currentExam = examRepository.getSelectedExam()
+        println(currentExam)
+        // TODO: использовать при загрузке вопросов
+        val questions = theoryRepository.getChapters()
+            .map { c -> c.questions }
+            .filter { q -> q.isNotEmpty() }
+            .flatten()
+        loadQuestions(questions)
     }
 }

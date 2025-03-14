@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
@@ -19,7 +20,7 @@ import com.example.examtrainer.presentation.viewmodel.exercise.ExamViewModel
 @Composable
 fun ExamStartScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
-    val viewModel: ExamViewModel = viewModel(backStackEntry)
+    val viewModel: ExamViewModel = hiltViewModel(backStackEntry)
 
     Column(
         modifier = Modifier

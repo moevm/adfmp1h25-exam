@@ -2,15 +2,20 @@ package com.example.examtrainer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.examtrainer.data.local.ExamRepository
 import com.example.examtrainer.domain.model.Exam
 import com.example.examtrainer.domain.model.VisitStatistic
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import javax.inject.Inject
 
-
-class MainScreenViewModel  : ViewModel() {
+@HiltViewModel
+class MainScreenViewModel @Inject constructor(
+    private val examRepository: ExamRepository
+)  : ViewModel() {
 
     // Состояние списка экзаменов
     private val _exams = MutableStateFlow<List<Exam>>(emptyList())
@@ -24,22 +29,33 @@ class MainScreenViewModel  : ViewModel() {
     private val _selectedExamVisitStatistics = MutableStateFlow<List<VisitStatistic>>(emptyList())
     val selectedExamVisitStatistics: StateFlow<List<VisitStatistic>> = _selectedExamVisitStatistics
 
-    // Функция для выбора экзамена
-    fun selectExam(exam: Exam) {
+    init {
+        loadExams()
+        loadSelectedExam()
+    }
+
+    fun loadExams() {
         viewModelScope.launch {
-            _selectedExam.value = exam
+            _exams.value = examRepository.getAllExams()
         }
     }
 
-    // Функция для загрузки списка экзаменов
-    fun loadExams() {
+    private fun loadSelectedExam() {
         viewModelScope.launch {
-            // Здесь может быть загрузка данных из API или базы данных
-            _exams.value = listOf(
-                Exam(1, "Математика"),
-                Exam(2, "Физика"),
-                Exam(3, "Химия")
-            )
+            var selectedExam = examRepository.getSelectedExam() ?: examRepository.getDefaultExam()
+            if (_exams.value.none { it.name == selectedExam.name }) {
+                // Если экзамен не найден, присваиваем дефолтный экзамен
+                selectedExam = examRepository.getDefaultExam()
+            }
+            _selectedExam.value = selectedExam
+            examRepository.saveSelectedExam(selectedExam)
+        }
+    }
+
+    fun selectExam(exam: Exam) {
+        viewModelScope.launch {
+            _selectedExam.value = exam
+            examRepository.saveSelectedExam(exam)
         }
     }
 

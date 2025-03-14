@@ -10,20 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
-import com.example.examtrainer.presentation.viewmodel.TrainingTOCViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.TrainingTOCViewModel
 import com.example.examtrainer.presentation.viewmodel.exercise.TrainingViewModel
 
 @Composable
 fun TrainingStartScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
-    val tocViewModel: TrainingTOCViewModel = viewModel(backStackEntry)
-    val viewModel: TrainingViewModel = viewModel(backStackEntry)
+    val tocViewModel: TrainingTOCViewModel = hiltViewModel(backStackEntry)
+    val viewModel: TrainingViewModel = hiltViewModel(backStackEntry)
 
     val chapterQuestions by tocViewModel.chapterQuestions.collectAsState()
     val currentChapterIdx by tocViewModel.currentChapterIdx.collectAsState()
@@ -32,6 +33,8 @@ fun TrainingStartScreen(navController: NavController) {
         val questions = chapterQuestions[currentChapterIdx].questions
         viewModel.loadQuestions(questions)
     }
+//
+//    println(currentChapterIdx)
 
     Column(
         modifier = Modifier
