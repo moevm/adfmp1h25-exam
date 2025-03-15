@@ -10,30 +10,34 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class TheoryRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) {
-    fun getChapters(): List<Chapter> {
+    fun getChapters(examName: String): List<Chapter> {
         return try {
             val inputStream = context.resources.openRawResource(R.raw.theory)
             val jsonString = inputStream.bufferedReader().use { it.readText() }
 
-            val chapterMapType = object :
-                TypeToken<Map<String, Map<String, List<String>>>>() {}.type
-            val rawChapterMap: Map<String, Map<String, List<String>>> = Gson()
-                .fromJson(jsonString, chapterMapType)
+            val examMapType = object :
+                TypeToken<Map<String, Map<String, Map<String, List<String>>>>>() {}.type
+            val examMap: Map<String, Map<String, Map<String, List<String>>>> =
+                Gson().fromJson(jsonString, examMapType)
 
-            rawChapterMap.map { (chapterTitle, sectionsMap) ->
-                Chapter(
-                    title = chapterTitle,
-                    sections = sectionsMap.map { (sectionTitle, contentList) ->
-                        Section(
-                            title = sectionTitle,
-                            content = contentList.joinToString(separator = "\n")
-                        )
-                    },
-                    questions = emptyList(),
-                )
+            val chapters: Map<String, List<Chapter>> = examMap.mapValues { (_, chaptersMap) ->
+                chaptersMap.map { (chapterTitle, sectionsMap) ->
+                    Chapter(
+                        title = chapterTitle,
+                        sections = sectionsMap.map { (sectionTitle, contentList) ->
+                            Section(
+                                title = sectionTitle,
+                                content = contentList.joinToString(separator = "\n"),
+                            )
+                        },
+                        questions = emptyList()
+                    )
+                }
             }
+
+            return chapters.getOrDefault(examName, emptyList())
         } catch (e: Exception) {
             emptyList()
         }
