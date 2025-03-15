@@ -1,8 +1,6 @@
 package com.example.examtrainer.domain.model
 
-data class Exam(
+data class ExamItem(
     val id: Int,
     val name: String,
-    val chapters: List<Chapter>,
 )
-

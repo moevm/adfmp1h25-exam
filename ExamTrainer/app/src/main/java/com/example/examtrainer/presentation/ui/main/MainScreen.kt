@@ -37,7 +37,7 @@ import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
-import com.example.examtrainer.domain.model.Exam
+import com.example.examtrainer.domain.model.ExamItem
 import com.example.examtrainer.presentation.navigation.NavRoutes
 
 
@@ -117,10 +117,10 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
     // Получаем выбранный экзамен
-    val selectedExam: Exam? = viewModel.selectedExam.collectAsState().value
+    val selectedExam: ExamItem? = viewModel.selectedExam.collectAsState().value
 
     // Получаем список экзаменов
-    val exams: List<Exam> = viewModel.exams.collectAsState().value
+    val exams: List<ExamItem> = viewModel.exams.collectAsState().value
 
 
     // Загружаем список экзаменов при первом запуске

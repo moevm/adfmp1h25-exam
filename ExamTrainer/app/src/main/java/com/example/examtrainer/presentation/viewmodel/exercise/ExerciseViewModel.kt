@@ -2,15 +2,12 @@ package com.example.examtrainer.presentation.viewmodel.exercise
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.examtrainer.data.local.ExamRepository
-import com.example.examtrainer.data.local.TheoryRepository
 import com.example.examtrainer.domain.model.Question
 import com.example.examtrainer.domain.utils.Timer
 import com.example.examtrainer.presentation.lifecycle.AppLifecycleObserver
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 abstract class ExerciseViewModel : ViewModel() {
     private val _appLifecycleObserver = AppLifecycleObserver()
