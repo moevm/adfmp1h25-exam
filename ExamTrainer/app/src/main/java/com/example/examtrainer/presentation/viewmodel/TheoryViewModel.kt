@@ -12,10 +12,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TheoryViewModel @Inject constructor(
-    private val examRepository: ExamRepository
+    private val examRepository: ExamRepository,
+    private val theoryRepository: TheoryRepository,
 ) : ViewModel() {
-    private val _repo: TheoryRepository = TheoryRepository()
-
     private val _chapters = MutableStateFlow<List<Chapter>>(emptyList())
     val chapters: StateFlow<List<Chapter>> = _chapters
 
@@ -38,6 +37,8 @@ class TheoryViewModel @Inject constructor(
     }
 
     private fun loadData() {
-        _chapters.value = _repo.getChapters()
+        _chapters.value = theoryRepository.getChapters(
+            examRepository.getSelectedOrDefaultExam().name,
+        )
     }
 }

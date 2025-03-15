@@ -10,3 +10,8 @@ data class Chapter(
     val sections: List<Section>,
     val questions: List<Question>,
 )
+
+data class Exam(
+    val name: String,
+    val chapters: List<Chapter>,
+)

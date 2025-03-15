@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TrainingViewModel @Inject constructor(
     private val examRepository: ExamRepository,
-    private val theoryRepository: TheoryRepository
+    private val theoryRepository: TheoryRepository,
 ) : BaseTrainingViewModel() {
 
     init {
@@ -22,7 +22,9 @@ class TrainingViewModel @Inject constructor(
         val currentExam = examRepository.getSelectedExam()
         println(currentExam)
         // TODO: использовать при загрузке вопросов
-        val questions = theoryRepository.getChapters()
+        val questions = theoryRepository.getChapters(
+            examRepository.getSelectedOrDefaultExam().name,
+        )
             .map { c -> c.questions }
             .filter { q -> q.isNotEmpty() }
             .flatten()

@@ -31,7 +31,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideTheoryRepository(): TheoryRepository {
-        return TheoryRepository()
+    fun provideTheoryRepository(
+        @ApplicationContext context: Context
+    ): TheoryRepository {
+        return TheoryRepository(context)
     }
 }
