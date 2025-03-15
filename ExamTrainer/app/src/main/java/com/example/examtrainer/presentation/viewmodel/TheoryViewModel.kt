@@ -1,7 +1,6 @@
 package com.example.examtrainer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.examtrainer.data.local.ExamRepository
 import com.example.examtrainer.data.local.TheoryRepository
 import com.example.examtrainer.domain.model.Chapter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,10 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TheoryViewModel @Inject constructor(
-    private val examRepository: ExamRepository
+    private val theoryRepository: TheoryRepository
 ) : ViewModel() {
-    private val _repo: TheoryRepository = TheoryRepository()
-
     private val _chapters = MutableStateFlow<List<Chapter>>(emptyList())
     val chapters: StateFlow<List<Chapter>> = _chapters
 
@@ -38,6 +35,6 @@ class TheoryViewModel @Inject constructor(
     }
 
     private fun loadData() {
-        _chapters.value = _repo.getChapters()
+        _chapters.value = theoryRepository.getChapters()
     }
 }
