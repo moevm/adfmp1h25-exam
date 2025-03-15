@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ExamTrainer</string>
+    <string name="description">Приложение для подготовки к экзаменам</string>
 </resources>
