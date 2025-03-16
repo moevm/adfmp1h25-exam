@@ -3,6 +3,8 @@ package com.example.examtrainer.data.local
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.examtrainer.R
+import com.example.examtrainer.data.local.model.DayOfWeek
+import com.example.examtrainer.data.local.model.StatsJson
 import com.example.examtrainer.domain.model.ExamItem
 import com.example.examtrainer.domain.model.StatisticData
 import com.example.examtrainer.domain.model.Topic
@@ -51,6 +53,23 @@ class StatsRepository @Inject constructor(
             ?: throw IllegalArgumentException("Topics not found for ${selectedExam.name}")
         return topicsMap.map { (name, progress) -> Topic(name, progress) }
     }
+
+    fun setTopicStat(examName: String, topicName: String, percent: Int){
+
+    }
+
+    fun setDayAttendance(day: String){
+
+    }
+
+    fun setGeneralStatField(examName: String, statField: String, value: Int){
+
+    }
+    fun incrementGeneralStatField(examName: String, statField: String){
+        
+    }
+
+
 
 
 }

@@ -10,10 +10,10 @@
   },
   "general_stats":{
     "Математика": {
-      "readed_chapt": 0,
-      "all_chapt": 0,
-      "readed_topics": 0,
-      "all_topics": 0,
+      "read_chapt": 0,
+      "all_chapt": 2,
+      "read_topics": 0,
+      "all_topics": 2,
       "answer_questions": 0,
       "all_questions": 0,
       "pass_exams": 0,
@@ -21,10 +21,10 @@
       "training_count": 0
     },
     "Физика":{
-      "readed_chapt": 0,
-      "all_chapt": 0,
-      "readed_topics": 0,
-      "all_topics": 0,
+      "read_chapt": 0,
+      "all_chapt": 3,
+      "read_topics": 0,
+      "all_topics": 3,
       "answer_questions": 0,
       "all_questions": 0,
       "pass_exams": 0,
@@ -32,10 +32,10 @@
       "training_count": 0
     },
     "ОС «Альт»": {
-      "readed_chapt": 0,
-      "all_chapt": 0,
-      "readed_topics": 0,
-      "all_topics": 0,
+      "read_chapt": 0,
+      "all_chapt": 6,
+      "read_topics": 0,
+      "all_topics": 6,
       "answer_questions": 0,
       "all_questions": 0,
       "pass_exams": 0,

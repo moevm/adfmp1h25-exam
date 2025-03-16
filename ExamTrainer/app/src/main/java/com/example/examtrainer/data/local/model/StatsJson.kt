@@ -1,4 +1,4 @@
-package com.example.examtrainer.data.local
+package com.example.examtrainer.data.local.model
 
 import com.example.examtrainer.domain.model.StatisticData
 import com.google.gson.annotations.SerializedName
