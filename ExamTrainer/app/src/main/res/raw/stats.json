@@ -1,0 +1,65 @@
+{
+  "attendance": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false
+  },
+  "general_stats":{
+    "Математика": {
+      "readed_chapt": 0,
+      "all_chapt": 0,
+      "readed_topics": 0,
+      "all_topics": 0,
+      "answer_questions": 0,
+      "all_questions": 0,
+      "pass_exams": 0,
+      "all_exams": 0,
+      "training_count": 0
+    },
+    "Физика":{
+      "readed_chapt": 0,
+      "all_chapt": 0,
+      "readed_topics": 0,
+      "all_topics": 0,
+      "answer_questions": 0,
+      "all_questions": 0,
+      "pass_exams": 0,
+      "all_exams": 0,
+      "training_count": 0
+    },
+    "ОС «Альт»": {
+      "readed_chapt": 0,
+      "all_chapt": 0,
+      "readed_topics": 0,
+      "all_topics": 0,
+      "answer_questions": 0,
+      "all_questions": 0,
+      "pass_exams": 0,
+      "all_exams": 0,
+      "training_count": 0
+    }
+  },
+  "topics_stats": {
+    "Математика": {
+        "Алгебра": 0,
+        "Геометрия": 0
+    },
+    "Физика":{
+      "Механика": 0,
+      "Электромагнетизм": 0,
+      "Оптика": 0
+    },
+    "ОС «Альт»": {
+      "Знакомство с ОС «Альт»": 0,
+      "Основы разработки в командной строке": 0,
+      "Получение документации": 0,
+      "Обработка текста": 0,
+      "Организация хранения данных": 0,
+      "Управляющие конструкции командного интерпретатора": 0
+    }
+  }
+}

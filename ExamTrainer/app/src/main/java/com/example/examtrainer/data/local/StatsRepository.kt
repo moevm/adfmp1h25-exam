@@ -9,5 +9,19 @@ class StatsRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     @ApplicationContext private val context: Context
 ) {
-    
+
+    //TODO
+    fun getAttendance() :List<Boolean>{
+        return mutableListOf();
+    }
+
+    fun getGeneralStats(){
+
+    }
+
+    fun getTopicsStats(){
+        //context.resources
+    }
+
+
 }
