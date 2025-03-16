@@ -3,7 +3,6 @@ package com.example.examtrainer.data.local
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.examtrainer.R
-import com.example.examtrainer.data.local.model.DayOfWeek
 import com.example.examtrainer.data.local.model.StatsFields
 import com.example.examtrainer.data.local.model.StatsJson
 import com.example.examtrainer.domain.model.ExamItem
@@ -99,9 +98,9 @@ class StatsRepository @Inject constructor(
             ?: throw IllegalArgumentException("Exam $examName not found")
 
         when (field) {
-            StatsFields.readChapters -> stats.readed_chapt = value
+            StatsFields.readChapters -> stats.read_chapt = value
             StatsFields.allChapters -> stats.all_chapt = value
-            StatsFields.readTopics -> stats.readed_topics = value
+            StatsFields.readTopics -> stats.read_topics = value
             StatsFields.allTopics -> stats.all_topics = value
             StatsFields.answerQuestions -> stats.answer_questions = value
             StatsFields.allQuestions -> stats.all_questions = value
@@ -124,9 +123,9 @@ class StatsRepository @Inject constructor(
             ?: throw IllegalArgumentException("Exam $examName not found")
 
         when (field) {
-            StatsFields.readChapters -> stats.readed_chapt++
+            StatsFields.readChapters -> stats.read_chapt++
             StatsFields.allChapters -> stats.all_chapt++
-            StatsFields.readTopics -> stats.readed_topics++
+            StatsFields.readTopics -> stats.read_topics++
             StatsFields.allTopics -> stats.all_topics++
             StatsFields.answerQuestions -> stats.answer_questions++
             StatsFields.allQuestions -> stats.all_questions++

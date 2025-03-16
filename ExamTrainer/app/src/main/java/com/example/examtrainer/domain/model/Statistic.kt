@@ -1,7 +1,5 @@
 package com.example.examtrainer.domain.model
 
-import kotlinx.coroutines.flow.MutableStateFlow
-
 // Data class для тем
 data class Topic(
     val name: String,
@@ -9,9 +7,9 @@ data class Topic(
 )
 
 data class StatisticData(
-    var readed_chapt: Int,
+    var read_chapt: Int,
     var all_chapt: Int,
-    var readed_topics: Int,
+    var read_topics: Int,
     var all_topics: Int,
     var answer_questions: Int,
     var all_questions: Int,

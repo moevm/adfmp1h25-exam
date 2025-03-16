@@ -15,7 +15,7 @@
       "read_topics": 0,
       "all_topics": 2,
       "answer_questions": 0,
-      "all_questions": 0,
+      "all_questions": 10,
       "pass_exams": 0,
       "all_exams": 0,
       "training_count": 0
@@ -26,7 +26,7 @@
       "read_topics": 0,
       "all_topics": 3,
       "answer_questions": 0,
-      "all_questions": 0,
+      "all_questions": 15,
       "pass_exams": 0,
       "all_exams": 0,
       "training_count": 0
@@ -37,7 +37,7 @@
       "read_topics": 0,
       "all_topics": 6,
       "answer_questions": 0,
-      "all_questions": 0,
+      "all_questions": 30,
       "pass_exams": 0,
       "all_exams": 0,
       "training_count": 0

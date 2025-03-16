@@ -34,13 +34,13 @@ class StatsViewModel @Inject constructor(
     }
 
     fun get_chapt(): String{
-        return _general_stats.value.readed_chapt.toString() + "/"+_general_stats.value.all_chapt.toString()
+        return _general_stats.value.read_chapt.toString() + "/"+_general_stats.value.all_chapt.toString()
     }
     fun get_topic(): String{
-        return _general_stats.value.readed_topics.toString() + "/"+_general_stats.value.all_topics.toString()
+        return _general_stats.value.read_topics.toString() + "/"+_general_stats.value.all_topics.toString()
     }
     fun get_questions(): String{
-        return _general_stats.value.answer_questions.toString() + "/"+_general_stats.value.answer_questions.toString()
+        return _general_stats.value.answer_questions.toString() + "/"+_general_stats.value.all_questions.toString()
     }
     fun get_exams(): String{
         return _general_stats.value.pass_exams.toString() + "/"+_general_stats.value.all_exams.toString()
