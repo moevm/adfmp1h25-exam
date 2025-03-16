@@ -36,7 +36,6 @@ class TrainingTOCViewModel @Inject constructor(
     fun loadData() {
         val currentExam = examRepository.getSelectedExam()
         println(currentExam)
-        // TODO: использовать при загрузке вопросов
         _chapterQuestions.value = theoryRepository.getChapters(
             examRepository.getSelectedOrDefaultExam().name,
         )
