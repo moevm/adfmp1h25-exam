@@ -2,8 +2,7 @@ package com.example.examtrainer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.examtrainer.data.local.ExamRepository
+import com.example.examtrainer.data.local.StatsRepository
 import com.example.examtrainer.domain.model.StatisticData
 import com.example.examtrainer.domain.model.Topic
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,52 +12,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(
-    private val examRepository: ExamRepository
+    private val statsRepository: StatsRepository
 ): ViewModel(){
 
     val _topics = MutableStateFlow<List<Topic>>(emptyList())
     val _general_stats = MutableStateFlow<StatisticData>(
-        value = StatisticData(
-            readed_chapt = 0,
-            all_chapt = 0,
-            readed_topics = 0,
-            all_topics = 0,
-            answer_questions = 0,
-            all_questions = 0,
-            pass_exams = 0,
-            all_exams = 0,
-            training_count = 0
-        )
+        value = statsRepository.getGeneralStats()
     )
 
     fun load_topics() {
         viewModelScope.launch {
-            _topics.value = listOf(
-                Topic("Тема 1", 89),
-                Topic("Тема 2", 20),
-                Topic("Тема 3", 79),
-                Topic("Тема 4", 50),
-                Topic("Тема 5", 61),
-                Topic("Тема 6", 5),
-                Topic("Тема 7", 15),
-                Topic("Тема 8", 42),
-                Topic("Тема 9", 30),
-            )
+            _topics.value = statsRepository.getTopicsStats()
         }
 
     }
 
     fun load_general_stats(){
         viewModelScope.launch {
-            _general_stats.value.readed_chapt = 3
-            _general_stats.value.all_chapt = 5
-            _general_stats.value.readed_topics = 5
-            _general_stats.value.all_topics = 10
-            _general_stats.value.answer_questions = 30
-            _general_stats.value.all_questions = 300
-            _general_stats.value.pass_exams = 3
-            _general_stats.value.all_exams = 10
-            _general_stats.value.training_count = 100
+            _general_stats.value = statsRepository.getGeneralStats()
         }
     }
 
