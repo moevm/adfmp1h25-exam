@@ -31,11 +31,7 @@ class TheoryRepository @Inject constructor(
             val questionsMap: Map<String, Map<String, List<Question>>> =
                 Gson().fromJson(jsonStringQuestions, questionsMapType)
 
-            val questions: List<Question> = questionsMap.flatMap { (_, chapters) ->
-                chapters.flatMap { (_, questions) -> questions }
-            }
-
-            val chapters: Map<String, List<Chapter>> = examMap.mapValues { (_, chaptersMap) ->
+            val chapters: Map<String, List<Chapter>> = examMap.mapValues { (examTitle, chaptersMap) ->
                 chaptersMap.map { (chapterTitle, sectionsMap) ->
                     Chapter(
                         title = chapterTitle,
@@ -45,7 +41,7 @@ class TheoryRepository @Inject constructor(
                                 content = contentList.joinToString(separator = "\n"),
                             )
                         },
-                        questions = questions
+                        questions = questionsMap[examName]?.get(chapterTitle) ?: emptyList()
                     )
                 }
             }
