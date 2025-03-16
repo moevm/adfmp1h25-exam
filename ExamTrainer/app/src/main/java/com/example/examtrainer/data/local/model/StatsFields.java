@@ -1,7 +1,6 @@
 package com.example.examtrainer.data.local.model;
 
 public enum StatsFields {
-
     readChapters("read_chapt"),
     allChapters("all_chapt"),
     readTopics("read_topics"),
@@ -11,6 +10,14 @@ public enum StatsFields {
     passExams("pass_exams"),
     allExams("all_exams"),
     trainingCount("training_count");
-    StatsFields(String field) {
+
+    private final String jsonName;
+
+    StatsFields(String jsonName) {
+        this.jsonName = jsonName;
+    }
+
+    public String getJsonName() {
+        return jsonName;
     }
 }

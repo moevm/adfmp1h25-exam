@@ -4,9 +4,9 @@ import com.example.examtrainer.domain.model.StatisticData
 import com.google.gson.annotations.SerializedName
 
 data class StatsJson(
-    val attendance: Map<String, Boolean>,
+    var attendance: MutableMap<String, Boolean>,
     @SerializedName("general_stats")
-    val generalStats: Map<String, StatisticData>,
+    var generalStats: MutableMap<String, StatisticData>,
     @SerializedName("topics_stats")
-    val topicsStats: Map<String, Map<String, Int>>
+    var topicsStats: MutableMap<String, MutableMap<String, Int>>
 )
