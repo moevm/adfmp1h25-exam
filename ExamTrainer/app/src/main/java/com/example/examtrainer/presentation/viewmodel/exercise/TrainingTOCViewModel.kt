@@ -23,6 +23,9 @@ class TrainingTOCViewModel @Inject constructor(
     private val _currentChapterIdx = MutableStateFlow(-1)
     val currentChapterIdx: StateFlow<Int> = _currentChapterIdx
 
+    private val _currentExam = MutableStateFlow<String?>("")
+    val currentExam: StateFlow<String?> = _currentExam
+
     init {
         println("training toc")
         loadData()
@@ -34,7 +37,7 @@ class TrainingTOCViewModel @Inject constructor(
     }
 
     fun loadData() {
-        val currentExam = examRepository.getSelectedExam()
+        _currentExam.value = examRepository.getSelectedExam()?.name
         println(currentExam)
         _chapterQuestions.value = theoryRepository.getChapters(
             examRepository.getSelectedOrDefaultExam().name,

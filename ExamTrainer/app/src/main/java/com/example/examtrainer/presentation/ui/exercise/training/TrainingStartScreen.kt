@@ -26,6 +26,7 @@ fun TrainingStartScreen(navController: NavController) {
     val tocViewModel: TrainingTOCViewModel = hiltViewModel(backStackEntry)
     val viewModel: TrainingViewModel = hiltViewModel(backStackEntry)
 
+    val currentExam by tocViewModel.currentExam.collectAsState()
     val chapterQuestions by tocViewModel.chapterQuestions.collectAsState()
     val currentChapterIdx by tocViewModel.currentChapterIdx.collectAsState()
 
@@ -55,7 +56,7 @@ fun TrainingStartScreen(navController: NavController) {
             headerText = "Тренировка",
             infoText =
             """
-                Вам будет предложено N вопросов по всему курсу “Выбранный экзамен”.
+                Вам будет предложено N вопросов по всему курсу “$currentExam”.
                 
                 В ходе решения экзамена Вы сможете получить подсказку по вопросу и посмотреть результат своего ответа.
             """.trimIndent(),
