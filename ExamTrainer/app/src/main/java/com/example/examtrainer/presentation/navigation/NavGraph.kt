@@ -13,6 +13,7 @@ import com.example.examtrainer.presentation.ui.main.MainScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamStartScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamResultScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingChaptersStartScreen
 import com.example.examtrainer.presentation.ui.theory.TheoryChaptersTOCScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingResultScreen
@@ -49,6 +50,9 @@ fun NavGraph() {
             }
             composable(NavRoutes.TRAINING_START) {
                 TrainingStartScreen(navController)
+            }
+            composable(NavRoutes.TRAINING_CHAPTERS_START) {
+                TrainingChaptersStartScreen(navController)
             }
             composable(NavRoutes.TRAINING_QUESTION) {
                 TrainingQuestionScreen(navController)
