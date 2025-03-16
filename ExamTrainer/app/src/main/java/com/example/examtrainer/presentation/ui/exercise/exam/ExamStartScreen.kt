@@ -26,6 +26,8 @@ fun ExamStartScreen(navController: NavController) {
 
     val currentExam by viewModel.currentExam.collectAsState()
 
+    val amountOfQuestions: Int = viewModel.questions.collectAsState().value.size
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -45,7 +47,7 @@ fun ExamStartScreen(navController: NavController) {
             headerText = "Экзамен",
             infoText =
             """
-                Вам будет предложено N вопросов по всему курсу “$currentExam”.
+                Вам будет предложено $amountOfQuestions вопросов по всему курсу “$currentExam”.
                 
                 В ходе решения экзамена Вы не сможете получить подсказку по вопросу или посмотреть результат своего ответа.
             """.trimIndent(),

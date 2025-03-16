@@ -30,8 +30,11 @@ fun TrainingStartScreen(navController: NavController) {
     val chapterQuestions by tocViewModel.chapterQuestions.collectAsState()
     val currentChapterIdx by tocViewModel.currentChapterIdx.collectAsState()
 
+    var amountOfQuestions = 0
+
     if (currentChapterIdx >= 0) {
         val questions = chapterQuestions[currentChapterIdx].questions
+        amountOfQuestions = questions.size
         viewModel.loadQuestions(questions)
     }
 //
@@ -56,7 +59,7 @@ fun TrainingStartScreen(navController: NavController) {
             headerText = "Тренировка",
             infoText =
             """
-                Вам будет предложено N вопросов по всему курсу “$currentExam”.
+                Вам будет предложено $amountOfQuestions вопросов по всему курсу “$currentExam”.
                 
                 В ходе решения экзамена Вы сможете получить подсказку по вопросу и посмотреть результат своего ответа.
             """.trimIndent(),
