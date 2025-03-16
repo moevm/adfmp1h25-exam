@@ -6,7 +6,9 @@ import com.example.examtrainer.R
 import com.example.examtrainer.domain.model.ExamItem
 import com.example.examtrainer.domain.model.StatisticData
 import com.example.examtrainer.domain.model.Topic
+import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.InputStreamReader
 import javax.inject.Inject
 
 class StatsRepository @Inject constructor(
@@ -15,6 +17,13 @@ class StatsRepository @Inject constructor(
 ) {
     companion object {
         private const val SELECTED_EXAM_KEY = "selected_exam"
+        private var STATS_FILE_NAME = R.raw.stats
+    }
+
+    // Загрузка данных из JSON
+    private fun loadStatsData(): StatsJson {
+        val inputStream = context.resources.openRawResource(STATS_FILE_NAME)
+        return Gson().fromJson(InputStreamReader(inputStream), StatsJson::class.java)
     }
 
     // Получаем выбранный экзамен из SharedPreferences
@@ -22,17 +31,25 @@ class StatsRepository @Inject constructor(
         val selectedExamName = sharedPreferences.getString(SELECTED_EXAM_KEY, null)
         return selectedExamName?.let { ExamItem(it.hashCode(), it) }
     }
-    //TODO
-    fun getAttendance() :Map<String, Boolean>{
-        val inputStream =  context.resources.openRawResource(R.raw.stats)
+    // Посещаемость
+    fun getAttendance(): Map<String, Boolean> {
+        return loadStatsData().attendance
     }
 
+    // Общая статистика
     fun getGeneralStats(): StatisticData {
-
+        val selectedExam = getSelectedExam() ?: throw IllegalStateException("Exam not selected")
+        val stats = loadStatsData().generalStats[selectedExam.name]
+            ?: throw IllegalArgumentException("Stats not found for ${selectedExam.name}")
+        return stats
     }
 
-    fun getTopicsStats(): List<Topic>{
-        //context.resources
+    // Статистика по темам
+    fun getTopicsStats(): List<Topic> {
+        val selectedExam = getSelectedExam() ?: throw IllegalStateException("Exam not selected")
+        val topicsMap = loadStatsData().topicsStats[selectedExam.name]
+            ?: throw IllegalArgumentException("Topics not found for ${selectedExam.name}")
+        return topicsMap.map { (name, progress) -> Topic(name, progress) }
     }
 
 
