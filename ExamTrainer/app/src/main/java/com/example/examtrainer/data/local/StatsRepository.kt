@@ -39,7 +39,7 @@ class StatsRepository @Inject constructor(
         statsFile.writeText(Gson().toJson(data))
     }
 
-    // Посещаемость
+    // Возвращает мапу с true/false состоянием посещаемости для каждого дня недели
     fun getAttendance(): Map<String, Boolean> {
         return loadStatsData().attendance
     }
@@ -60,6 +60,7 @@ class StatsRepository @Inject constructor(
         return topicsMap.map { (name, progress) -> Topic(name, progress) }
     }
 
+    //Записывает процент изученности темы для переданной темы и переданного экзамена
     fun setTopicStat(examName: String, topicName: String, percent: Int) {
         val data = loadStatsData()
         val topics = data.topicsStats[examName]
@@ -70,6 +71,7 @@ class StatsRepository @Inject constructor(
         } ?: throw IllegalArgumentException("Topic $topicName not found")
     }
 
+    //Устанавливает значение для переданного дня для отслеживания посещаемости
     fun setDayAttendance(day: String, value: Boolean) {
         val data = loadStatsData().apply {
             attendance[day] = value // Работает с MutableMap
@@ -77,6 +79,7 @@ class StatsRepository @Inject constructor(
         saveStatsData(data)
     }
 
+    //Устанавливает все значения посещаемости (для всех дней недели) в false
     fun resetAllDaysAttendance() {
         val data = loadStatsData().apply {
             attendance.keys.forEach { day ->
@@ -86,6 +89,7 @@ class StatsRepository @Inject constructor(
         saveStatsData(data)
     }
 
+    //Записывает значение в поле общей статистики (можно взять в StatsFields enum) для переданной темы и переданного экзамена
     fun setGeneralStatField(examName: String, statField: String, value: Int) {
         val field = try {
             StatsFields.valueOf(statField)
@@ -111,6 +115,7 @@ class StatsRepository @Inject constructor(
         saveStatsData(data)
     }
 
+    //Увеличивает на 1 значение в поле общей статистики (можно взять в StatsFields enum) для переданной темы и переданного экзамена
     fun incrementGeneralStatField(examName: String, statField: String) {
         val field = try {
             StatsFields.valueOf(statField)
