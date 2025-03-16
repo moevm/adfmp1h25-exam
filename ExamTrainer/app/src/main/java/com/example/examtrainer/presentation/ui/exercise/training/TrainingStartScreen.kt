@@ -30,15 +30,12 @@ fun TrainingStartScreen(navController: NavController) {
     val chapterQuestions by tocViewModel.chapterQuestions.collectAsState()
     val currentChapterIdx by tocViewModel.currentChapterIdx.collectAsState()
 
-    var amountOfQuestions = 0
-
     if (currentChapterIdx >= 0) {
         val questions = chapterQuestions[currentChapterIdx].questions
-        amountOfQuestions = questions.size
         viewModel.loadQuestions(questions)
     }
-//
-//    println(currentChapterIdx)
+
+    val amountOfQuestions: Int = viewModel.questions.collectAsState().value.size
 
     Column(
         modifier = Modifier
