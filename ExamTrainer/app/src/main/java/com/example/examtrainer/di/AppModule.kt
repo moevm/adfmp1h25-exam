@@ -3,6 +3,7 @@ package com.example.examtrainer.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.examtrainer.data.local.ExamRepository
+import com.example.examtrainer.data.local.StatsRepository
 import com.example.examtrainer.data.local.TheoryRepository
 import dagger.Module
 import dagger.Provides
@@ -35,5 +36,14 @@ object AppModule {
         @ApplicationContext context: Context
     ): TheoryRepository {
         return TheoryRepository(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStatsRepository(
+        sharedPreferences: SharedPreferences,
+        @ApplicationContext context: Context
+    ): StatsRepository {
+        return StatsRepository(sharedPreferences, context)
     }
 }
