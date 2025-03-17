@@ -21,7 +21,6 @@ class TrainingViewModel @Inject constructor(
     override fun loadData() {
         val currentExam = examRepository.getSelectedExam()
         println(currentExam)
-        // TODO: использовать при загрузке вопросов
         val questions = theoryRepository.getChapters(
             examRepository.getSelectedOrDefaultExam().name,
         )

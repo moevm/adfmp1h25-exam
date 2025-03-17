@@ -26,7 +26,7 @@ fun TrainingTOCScreen(navController: NavController) {
         items = chapterTitles,
         onItemClick = { chapterIdx ->
             viewModel.selectChapter(chapterIdx)
-            navController.navigate(NavRoutes.TRAINING_START) {
+            navController.navigate(NavRoutes.TRAINING_CHAPTERS_START) {
                 launchSingleTop = true
                 restoreState = true
             }

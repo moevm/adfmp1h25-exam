@@ -3,6 +3,7 @@ package com.example.examtrainer.data.local
 import android.content.Context
 import com.example.examtrainer.R
 import com.example.examtrainer.domain.model.Chapter
+import com.example.examtrainer.domain.model.Question
 import com.example.examtrainer.domain.model.Section
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -22,7 +23,15 @@ class TheoryRepository @Inject constructor(
             val examMap: Map<String, Map<String, Map<String, List<String>>>> =
                 Gson().fromJson(jsonString, examMapType)
 
-            val chapters: Map<String, List<Chapter>> = examMap.mapValues { (_, chaptersMap) ->
+            val inputStreamQuestions = context.resources.openRawResource(R.raw.questions)
+            val jsonStringQuestions = inputStreamQuestions.bufferedReader().use { it.readText() }
+
+            val questionsMapType = object :
+                TypeToken<Map<String, Map<String, List<Question>>>>() {}.type
+            val questionsMap: Map<String, Map<String, List<Question>>> =
+                Gson().fromJson(jsonStringQuestions, questionsMapType)
+
+            val chapters: Map<String, List<Chapter>> = examMap.mapValues { (examTitle, chaptersMap) ->
                 chaptersMap.map { (chapterTitle, sectionsMap) ->
                     Chapter(
                         title = chapterTitle,
@@ -32,7 +41,7 @@ class TheoryRepository @Inject constructor(
                                 content = contentList.joinToString(separator = "\n"),
                             )
                         },
-                        questions = emptyList()
+                        questions = questionsMap[examName]?.get(chapterTitle) ?: emptyList()
                     )
                 }
             }
