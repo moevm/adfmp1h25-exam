@@ -11,7 +11,6 @@ import com.example.examtrainer.domain.model.Topic
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
-import java.io.InputStreamReader
 import javax.inject.Inject
 
 class StatsRepository @Inject constructor(
@@ -20,23 +19,45 @@ class StatsRepository @Inject constructor(
 ) {
     companion object {
         private const val SELECTED_EXAM_KEY = "selected_exam"
-        private var STATS_FILE_NAME = R.raw.stats
+        private const val STATS_FILE_NAME = "stats.json"
     }
-    private val statsFile by lazy { File(context.filesDir, "stats.json") }
 
-    // Загрузка данных из JSON
+    private val statsFile by lazy { File(context.filesDir, STATS_FILE_NAME) }
+    private val gson = Gson()
+
+    init {
+        initStatsFile()
+    }
+
+    private fun initStatsFile() {
+        if (!statsFile.exists()) {
+            context.resources.openRawResource(R.raw.stats).use { input ->
+                statsFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+        }
+    }
+
     private fun loadStatsData(): StatsJson {
-        val inputStream = context.resources.openRawResource(STATS_FILE_NAME)
-        return Gson().fromJson(InputStreamReader(inputStream), StatsJson::class.java)
+        return statsFile.inputStream().reader().use { reader ->
+            gson.fromJson(reader, StatsJson::class.java).apply {
+                // Преобразование в mutable коллекции
+                attendance = attendance.toMutableMap()
+                generalStats = generalStats.mapValuesTo(LinkedHashMap()) { it.value }
+                topicsStats = topicsStats.mapValues { it.value.toMutableMap() }.toMutableMap()
+            }
+        }
+    }
+
+    private fun saveStatsData(data: StatsJson) {
+        statsFile.writeText(gson.toJson(data))
     }
 
     // Получаем выбранный экзамен из SharedPreferences
     fun getSelectedExam(): ExamItem? {
         val selectedExamName = sharedPreferences.getString(SELECTED_EXAM_KEY, null)
         return selectedExamName?.let { ExamItem(it.hashCode(), it) }
-    }
-    private fun saveStatsData(data: StatsJson) {
-        statsFile.writeText(Gson().toJson(data))
     }
 
     // Возвращает мапу с true/false состоянием посещаемости для каждого дня недели
@@ -62,11 +83,13 @@ class StatsRepository @Inject constructor(
 
     //Записывает процент изученности темы для переданной темы и переданного экзамена
     fun setTopicStat(examName: String, topicName: String, percent: Int) {
+//        System.out.println("topic " + examName + " " + topicName + " " + percent)
         val data = loadStatsData()
         val topics = data.topicsStats[examName]
             ?: throw IllegalArgumentException("Exam $examName not found")
         topics[topicName]?.let {
-            topics[topicName] = percent.coerceIn(0..100)
+            topics[topicName] = percent
+//            System.out.println("topic " + topics[topicName] + " " + data)
             saveStatsData(data)
         } ?: throw IllegalArgumentException("Topic $topicName not found")
     }
@@ -91,6 +114,7 @@ class StatsRepository @Inject constructor(
 
     //Записывает значение в поле общей статистики (можно взять в StatsFields enum) для переданной темы и переданного экзамена
     fun setGeneralStatField(examName: String, statField: String, value: Int) {
+//        System.out.println("general " + examName + " " + statField + " " + value)
         val field = try {
             StatsFields.valueOf(statField)
         } catch (e: IllegalArgumentException) {
@@ -112,6 +136,7 @@ class StatsRepository @Inject constructor(
             StatsFields.allExams -> stats.all_exams = value
             StatsFields.trainingCount -> stats.training_count = value
         }
+//        System.out.println("general "+ stats + " " + data)
         saveStatsData(data)
     }
 
