@@ -30,7 +30,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.examtrainer.domain.model.Exam
+import com.example.examtrainer.domain.model.ExamItem
 import com.example.examtrainer.presentation.viewmodel.MainScreenViewModel
 
 @Composable
@@ -39,7 +39,7 @@ fun StatisticWidget (onClick: () -> Unit) {
     val viewModel: MainScreenViewModel = viewModel()
 
     // Получаем выбранный экзамен
-    val selectedExam: Exam? = viewModel.selectedExam.collectAsState().value
+    val selectedExam: ExamItem? = viewModel.selectedExam.collectAsState().value
 
     // Получаем статистику по экзамену
     val selectedExamVisitStatistics by viewModel.selectedExamVisitStatistics.collectAsState()

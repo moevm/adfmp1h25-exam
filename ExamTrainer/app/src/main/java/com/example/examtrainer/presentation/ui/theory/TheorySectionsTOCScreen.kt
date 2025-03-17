@@ -3,6 +3,7 @@ package com.example.examtrainer.presentation.ui.theory
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
@@ -13,7 +14,7 @@ import com.example.examtrainer.presentation.viewmodel.TheoryViewModel
 @Composable
 fun TheorySectionsTOCScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.THEORY_ROOT)
-    val viewModel: TheoryViewModel = viewModel(backStackEntry)
+    val viewModel: TheoryViewModel = hiltViewModel(backStackEntry)
 
     val chapters by viewModel.chapters.collectAsState()
     val currentChapterIdx by viewModel.currentChapterIdx.collectAsState()

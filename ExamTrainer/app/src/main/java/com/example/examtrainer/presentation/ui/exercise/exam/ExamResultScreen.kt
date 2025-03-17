@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
@@ -40,7 +41,7 @@ import java.util.Locale
 @Composable
 fun ExamResultScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
-    val viewModel: ExamViewModel = viewModel(backStackEntry)
+    val viewModel: ExamViewModel = hiltViewModel(backStackEntry)
 
     val time by viewModel.elapsedTime.collectAsState()
     val questions by viewModel.questions.collectAsState()

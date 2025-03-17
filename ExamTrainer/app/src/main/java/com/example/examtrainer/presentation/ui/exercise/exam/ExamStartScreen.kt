@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
@@ -19,7 +22,11 @@ import com.example.examtrainer.presentation.viewmodel.exercise.ExamViewModel
 @Composable
 fun ExamStartScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
-    val viewModel: ExamViewModel = viewModel(backStackEntry)
+    val viewModel: ExamViewModel = hiltViewModel(backStackEntry)
+
+    val currentExam by viewModel.currentExam.collectAsState()
+
+    val amountOfQuestions: Int = viewModel.questions.collectAsState().value.size
 
     Column(
         modifier = Modifier
@@ -40,7 +47,7 @@ fun ExamStartScreen(navController: NavController) {
             headerText = "Экзамен",
             infoText =
             """
-                Вам будет предложено N вопросов по всему курсу “Выбранный экзамен”.
+                Вам будет предложено $amountOfQuestions вопросов по всему курсу “$currentExam”.
                 
                 В ходе решения экзамена Вы не сможете получить подсказку по вопросу или посмотреть результат своего ответа.
             """.trimIndent(),

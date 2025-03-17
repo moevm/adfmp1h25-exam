@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.domain.model.Topic
@@ -44,7 +45,7 @@ enum class SortState { NONE, DESCENDING, ASCENDING }
 
 @Composable
 fun TopicsStudyStatsScreen(navController: NavController) {
-    val viewModel: StatsViewModel = viewModel()
+    val viewModel: StatsViewModel = hiltViewModel()
 
 
     var sortState by remember { mutableStateOf(SortState.NONE) }
@@ -149,7 +150,8 @@ fun STOC(
     ) {
         items(items = sortedTopics, key = { it.name }) { topic ->
             val backgroundColor = when {
-                topic.progress == maxProgress -> MaterialTheme.colorScheme.primaryContainer
+                maxProgress == minProgress -> MaterialTheme.colorScheme.background
+                topic.progress == maxProgress -> MaterialTheme.colorScheme.surface
                 topic.progress == minProgress -> MaterialTheme.colorScheme.errorContainer
                 else -> MaterialTheme.colorScheme.background
             }

@@ -37,7 +37,7 @@ import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
-import com.example.examtrainer.domain.model.Exam
+import com.example.examtrainer.domain.model.ExamItem
 import com.example.examtrainer.presentation.navigation.NavRoutes
 
 
@@ -112,24 +112,21 @@ fun InfoHeader(onClick: () -> Unit) {
 }
 
 @Composable
-fun MainScreen(navController: NavController) {
-    // Получаем ViewModel
-    val viewModel: MainScreenViewModel = viewModel()
-
+fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
     // Состояние для видимости выпадающего меню
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
     // Получаем выбранный экзамен
-    val selectedExam: Exam? = viewModel.selectedExam.collectAsState().value
+    val selectedExam: ExamItem? = viewModel.selectedExam.collectAsState().value
 
     // Получаем список экзаменов
-    val exams: List<Exam> = viewModel.exams.collectAsState().value
+    val exams: List<ExamItem> = viewModel.exams.collectAsState().value
 
 
     // Загружаем список экзаменов при первом запуске
     LaunchedEffect(Unit) {
         viewModel.loadExams()
-        viewModel.updateVisitStatistics()
+        viewModel.getVisitStatistics()
     }
 
 
@@ -247,6 +244,7 @@ fun MainScreen(navController: NavController) {
                 onClick = {
                     navController.navigate(NavRoutes.TRAINING_START) {
                         launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 text = "Тренировка"
@@ -257,6 +255,7 @@ fun MainScreen(navController: NavController) {
                 onClick = {
                     navController.navigate(NavRoutes.TRAINING_ROOT) {
                         launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 text = "По темам",

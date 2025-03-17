@@ -2,68 +2,68 @@ package com.example.examtrainer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.examtrainer.data.local.ExamRepository
+import com.example.examtrainer.data.local.StatsRepository
+import com.example.examtrainer.data.local.model.GeneralStats
+import com.example.examtrainer.data.local.model.QuestionStat
+import com.example.examtrainer.data.local.model.StatsFields
 import com.example.examtrainer.domain.model.StatisticData
 import com.example.examtrainer.domain.model.Topic
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class StatsViewModel: ViewModel(){
+@HiltViewModel
+class StatsViewModel @Inject constructor(
+    private val examRepository: ExamRepository,
+    private val statsRepository: StatsRepository
+): ViewModel(){
 
     val _topics = MutableStateFlow<List<Topic>>(emptyList())
-    val _general_stats = MutableStateFlow<StatisticData>(
-        value = StatisticData(
-            readed_chapt = 0,
-            all_chapt = 0,
-            readed_topics = 0,
-            all_topics = 0,
-            answer_questions = 0,
-            all_questions = 0,
-            pass_exams = 0,
-            all_exams = 0,
-            training_count = 0
-        )
+    val _general_stats = MutableStateFlow<GeneralStats>(
+        value = statsRepository.getGeneralStats(examRepository.getSelectedExam()!!.name)
     )
 
     fun load_topics() {
         viewModelScope.launch {
-            _topics.value = listOf(
-                Topic("Тема 1", 89),
-                Topic("Тема 2", 20),
-                Topic("Тема 3", 79),
-                Topic("Тема 4", 50),
-                Topic("Тема 5", 61),
-                Topic("Тема 6", 5),
-                Topic("Тема 7", 15),
-                Topic("Тема 8", 42),
-                Topic("Тема 9", 30),
-            )
+            _topics.value =  transformToTopics(_general_stats.value.question)
         }
 
+    }
+
+    private fun transformToTopics(questionMap: MutableMap<String, MutableMap<String, QuestionStat>>): List<Topic> {
+        return questionMap.map { (topicName, questions) ->
+            // Вычисляем сумму all и right для всех вопросов в теме
+            val totalAll = questions.values.sumOf { it.all }
+            val totalRight = questions.values.sumOf { it.right }
+
+            // Вычисляем прогресс в процентах
+            val progress = if (totalAll > 0) {
+                (totalRight.toDouble() / totalAll.toDouble() * 100).toInt()
+            } else {
+                0 // Если вопросов нет, прогресс 0%
+            }
+
+            // Создаем объект Topic
+            Topic(name = topicName, progress = progress)
+        }
     }
 
     fun load_general_stats(){
         viewModelScope.launch {
-            _general_stats.value.readed_chapt = 3
-            _general_stats.value.all_chapt = 5
-            _general_stats.value.readed_topics = 5
-            _general_stats.value.all_topics = 10
-            _general_stats.value.answer_questions = 30
-            _general_stats.value.all_questions = 300
-            _general_stats.value.pass_exams = 3
-            _general_stats.value.all_exams = 10
-            _general_stats.value.training_count = 100
+            _general_stats.value = statsRepository.getGeneralStats(examRepository.getSelectedExam()!!.name)
         }
     }
 
     fun get_chapt(): String{
-        return _general_stats.value.readed_chapt.toString() + "/"+_general_stats.value.all_chapt.toString()
+        return _general_stats.value.getReadChaptersCount().toString() + "/" + _general_stats.value.getTotalChaptersCount().toString()//_general_stats.value.read_chapt.toString() + "/"+_general_stats.value.all_chapt.toString()
     }
     fun get_topic(): String{
-        return _general_stats.value.readed_topics.toString() + "/"+_general_stats.value.all_topics.toString()
+        return ""//_general_stats.value.read_topics.toString() + "/"+_general_stats.value.all_topics.toString()
     }
     fun get_questions(): String{
-        return _general_stats.value.answer_questions.toString() + "/"+_general_stats.value.answer_questions.toString()
+        return ""//_general_stats.value.answer_questions.toString() + "/"+_general_stats.value.all_questions.toString()
     }
     fun get_exams(): String{
         return _general_stats.value.pass_exams.toString() + "/"+_general_stats.value.all_exams.toString()

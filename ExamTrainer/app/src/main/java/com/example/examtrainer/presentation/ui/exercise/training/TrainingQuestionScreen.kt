@@ -39,6 +39,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
@@ -59,7 +60,7 @@ enum class AnswerStatus {
 @Composable
 fun TrainingQuestionScreen(navController: NavController) {
     val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
-    val viewModel: TrainingViewModel = viewModel(backStackEntry)
+    val viewModel: TrainingViewModel = hiltViewModel(backStackEntry)
 
     var showDialog by remember { mutableStateOf(false) }
     val questions by viewModel.questions.collectAsState()

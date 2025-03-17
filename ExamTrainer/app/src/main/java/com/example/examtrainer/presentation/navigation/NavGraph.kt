@@ -1,14 +1,19 @@
 package com.example.examtrainer.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.examtrainer.presentation.ui.main.MainScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamStartScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.exam.ExamResultScreen
+import com.example.examtrainer.presentation.ui.exercise.training.TrainingChaptersStartScreen
 import com.example.examtrainer.presentation.ui.theory.TheoryChaptersTOCScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingQuestionScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingResultScreen
@@ -17,8 +22,12 @@ import com.example.examtrainer.presentation.ui.stats.GeneralStatsScreen
 import com.example.examtrainer.presentation.ui.stats.TopicsStudyStatsScreen
 import com.example.examtrainer.presentation.ui.exercise.training.TrainingTOCScreen
 import com.example.examtrainer.presentation.ui.info.InfoScreen
+import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.ui.theory.TheoryContentScreen
 import com.example.examtrainer.presentation.ui.theory.TheorySectionsTOCScreen
+import com.example.examtrainer.presentation.viewmodel.MainScreenViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.TrainingTOCViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.TrainingViewModel
 
 @Composable
 fun NavGraph() {
@@ -28,8 +37,9 @@ fun NavGraph() {
         navController = navController,
         startDestination = NavRoutes.MAIN
     ) {
-        composable(NavRoutes.MAIN) {
-            MainScreen(navController)
+        composable(NavRoutes.MAIN) { navBackStackEntry ->
+            val viewModel: MainScreenViewModel = hiltViewModel(navBackStackEntry)
+            MainScreen(navController, viewModel)
         }
         navigation(
             startDestination = NavRoutes.TRAINING_CHAPTERS,
@@ -40,6 +50,9 @@ fun NavGraph() {
             }
             composable(NavRoutes.TRAINING_START) {
                 TrainingStartScreen(navController)
+            }
+            composable(NavRoutes.TRAINING_CHAPTERS_START) {
+                TrainingChaptersStartScreen(navController)
             }
             composable(NavRoutes.TRAINING_QUESTION) {
                 TrainingQuestionScreen(navController)

@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
@@ -45,7 +46,7 @@ import com.example.examtrainer.presentation.viewmodel.StatsViewModel
 @Composable
 fun GeneralStatsScreen(navController: NavController) {
 
-    val viewModel: StatsViewModel = viewModel()
+    val viewModel: StatsViewModel = hiltViewModel()
     val configuration = LocalConfiguration.current
     viewModel.load_general_stats()
     Column(
@@ -77,17 +78,17 @@ fun GeneralStatsScreen(navController: NavController) {
             value = viewModel.get_chapt()
         )
 
-        StatItem(
-            icon = Icons.Default.Checklist, // Иконка для тем
-            title = "Прошли тем",
-            value = viewModel.get_topic()
-        )
+//        StatItem(
+//            icon = Icons.Default.Checklist, // Иконка для тем
+//            title = "Прошли тем",
+//            value = viewModel.get_topic()
+//        )
 
-        StatItem(
-            icon = Icons.Default.QuestionMark, // Иконка для вопросов
-            title = "Решили вопросов",
-            value = viewModel.get_questions()
-        )
+//        StatItem(
+//            icon = Icons.Default.QuestionMark, // Иконка для вопросов
+//            title = "Решили вопросов",
+//            value = viewModel.get_questions()
+//        )
 
         StatItem(
             icon = Icons.Default.School, // Иконка для экзаменов
