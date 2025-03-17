@@ -60,7 +60,7 @@ class ExamViewModel @Inject constructor(
 
     override fun loadData() {
         _currentExam.value = examRepository.getSelectedExam()?.name
-        println(currentExam)
+//        println(currentExam)
         val questions = theoryRepository.getChapters(
             examRepository.getSelectedOrDefaultExam().name,
         )
@@ -83,14 +83,15 @@ class ExamViewModel @Inject constructor(
         super.stopExercise()
         viewModelScope.launch {
             successThreshold.collect { res ->
+//                println(res)
                 if (res) {
                     statsRepository.incrementGeneralStatField(examRepository.getSelectedExam()!!.name, StatsFields.passExams.name)
                 }
-                statsRepository.incrementGeneralStatField(examRepository.getSelectedExam()!!.name, StatsFields.allExams.name)
-                println(statsRepository.getGeneralStats(examRepository.getSelectedExam()!!.name))
             }
         }
+        statsRepository.incrementGeneralStatField(examRepository.getSelectedExam()!!.name, StatsFields.allExams.name)
 
+        println("stop Exercise")
     }
 
     override fun confirmAnswer() {

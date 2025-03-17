@@ -17,7 +17,7 @@ class TrainingViewModel @Inject constructor(
 ) : BaseTrainingViewModel() {
 
     init {
-        println("training")
+//        println("training")
         loadData()
     }
 
@@ -36,7 +36,7 @@ class TrainingViewModel @Inject constructor(
     override fun stopExercise() {
         super.stopExercise()
         statsRepository.incrementGeneralStatField(examRepository.getSelectedExam()!!.name, StatsFields.trainingCount.name)
-        println(statsRepository.getGeneralStats(examRepository.getSelectedExam()!!.name))
+//        println(statsRepository.getGeneralStats(examRepository.getSelectedExam()!!.name))
     }
 
     override fun confirmAnswer() {

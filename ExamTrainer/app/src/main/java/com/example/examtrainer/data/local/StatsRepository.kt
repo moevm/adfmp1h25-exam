@@ -30,7 +30,7 @@ class StatsRepository @Inject constructor(
 
     init {
         try {
-            initStatsFile()
+//            initStatsFile()
 
             if (!statsFile.exists()) {
                 initStatsFile()
@@ -78,7 +78,7 @@ class StatsRepository @Inject constructor(
                 attendance = mutableListOf("2025-03-15", "2025-03-14"),
                 generalStats = examStats
             )
-            println(stats)
+//            println(stats)
             saveStatsData(stats)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -239,7 +239,7 @@ class StatsRepository @Inject constructor(
         }
 
         val data = loadStatsData()
-        println(data)
+//        println(data)
         val stats = data.generalStats[examName]
             ?: throw IllegalArgumentException("Exam $examName not found")
 

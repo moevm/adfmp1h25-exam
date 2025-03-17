@@ -27,13 +27,13 @@ class TrainingTOCViewModel @Inject constructor(
     val currentExam: StateFlow<String?> = _currentExam
 
     init {
-        println("training toc")
+//        println("training toc")
         loadData()
     }
 
     fun selectChapter(chapterIdx: Int) {
         _currentChapterIdx.value = chapterIdx
-        println(_currentChapterIdx.value)
+//        println(_currentChapterIdx.value)
     }
 
     fun loadData() {
