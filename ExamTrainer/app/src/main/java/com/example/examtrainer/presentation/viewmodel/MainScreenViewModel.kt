@@ -3,6 +3,7 @@ package com.example.examtrainer.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.examtrainer.data.local.ExamRepository
+import com.example.examtrainer.data.local.StatsRepository
 import com.example.examtrainer.domain.model.ExamItem
 import com.example.examtrainer.domain.model.VisitStatistic
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    private val examRepository: ExamRepository
+    private val examRepository: ExamRepository,
+    private val statsRepository: StatsRepository
 ) : ViewModel() {
 
     // Состояние списка экзаменов
@@ -32,6 +34,7 @@ class MainScreenViewModel @Inject constructor(
     init {
         loadExams()
         loadSelectedExam()
+        updateVisitStatistics()
     }
 
     fun loadExams() {
@@ -52,6 +55,11 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+    fun updateVisitStatistics() {
+        val currentDate = LocalDate.now()
+        statsRepository.setDayAttendance(currentDate.toString())
+    }
+
     fun selectExam(exam: ExamItem) {
         viewModelScope.launch {
             _selectedExam.value = exam
@@ -59,14 +67,15 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    fun updateVisitStatistics() {
+    fun getVisitStatistics() {
         val currentDate = LocalDate.now()
+        val attendance: List<String> = statsRepository.getAttendance()
 
         val statistics = (0..6).map { dayOffset ->
             val date = currentDate.minusDays(dayOffset.toLong())
             VisitStatistic(
                 date = date,
-                isVisited = (dayOffset % 2 == 0) // Пример: чередование посещений
+                isVisited = attendance.contains(date.toString())
             )
         }.reversed() // Для отображения последних дней слева направо
 

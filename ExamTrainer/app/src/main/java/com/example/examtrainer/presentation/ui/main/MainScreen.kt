@@ -126,7 +126,7 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
     // Загружаем список экзаменов при первом запуске
     LaunchedEffect(Unit) {
         viewModel.loadExams()
-        viewModel.updateVisitStatistics()
+        viewModel.getVisitStatistics()
     }
 
 

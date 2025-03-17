@@ -78,17 +78,17 @@ fun GeneralStatsScreen(navController: NavController) {
             value = viewModel.get_chapt()
         )
 
-        StatItem(
-            icon = Icons.Default.Checklist, // Иконка для тем
-            title = "Прошли тем",
-            value = viewModel.get_topic()
-        )
+//        StatItem(
+//            icon = Icons.Default.Checklist, // Иконка для тем
+//            title = "Прошли тем",
+//            value = viewModel.get_topic()
+//        )
 
-        StatItem(
-            icon = Icons.Default.QuestionMark, // Иконка для вопросов
-            title = "Решили вопросов",
-            value = viewModel.get_questions()
-        )
+//        StatItem(
+//            icon = Icons.Default.QuestionMark, // Иконка для вопросов
+//            title = "Решили вопросов",
+//            value = viewModel.get_questions()
+//        )
 
         StatItem(
             icon = Icons.Default.School, // Иконка для экзаменов

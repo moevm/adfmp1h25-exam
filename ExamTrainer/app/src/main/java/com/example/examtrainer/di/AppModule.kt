@@ -41,9 +41,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideStatsRepository(
-        sharedPreferences: SharedPreferences,
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
+        examRepository: ExamRepository,
+        theoryRepository: TheoryRepository
     ): StatsRepository {
-        return StatsRepository(sharedPreferences, context)
+        return StatsRepository(context, examRepository, theoryRepository)
     }
 }

@@ -75,7 +75,7 @@ abstract class ExerciseViewModel : ViewModel() {
         timer.start(viewModelScope)
     }
 
-    fun stopExercise() {
+    open fun stopExercise() {
         isExerciseRunning = false
         timer.stop()
     }

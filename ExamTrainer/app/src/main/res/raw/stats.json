@@ -1,19 +1,11 @@
 {
-  "attendance": {
-    "Monday": false,
-    "Tuesday": false,
-    "Wednesday": false,
-    "Thursday": false,
-    "Friday": false,
-    "Saturday": false,
-    "Sunday": false
-  },
+  "attendance": ["2025-03-15", "2025-03-14"],
   "general_stats":{
     "Математика": {
       "read_chapt": 0,
       "all_chapt": 2,
       "read_topics": 0,
-      "all_topics": 2,
+      "all_topics": 12,
       "answer_questions": 0,
       "all_questions": 10,
       "pass_exams": 0,
@@ -24,7 +16,7 @@
       "read_chapt": 0,
       "all_chapt": 3,
       "read_topics": 0,
-      "all_topics": 3,
+      "all_topics": 12,
       "answer_questions": 0,
       "all_questions": 15,
       "pass_exams": 0,
