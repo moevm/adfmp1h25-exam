@@ -46,15 +46,17 @@ class ExamViewModel @Inject constructor(
         initialValue = false,
     )
 
+    private val _currentExam = MutableStateFlow<String?>("")
+    val currentExam: StateFlow<String?> = _currentExam
+
     init {
         observeTimer()
         loadData()
     }
 
     override fun loadData() {
-        val currentExam = examRepository.getSelectedExam()
+        _currentExam.value = examRepository.getSelectedExam()?.name
         println(currentExam)
-        // TODO: использовать при загрузке вопросов
         val questions = theoryRepository.getChapters(
             examRepository.getSelectedOrDefaultExam().name,
         )

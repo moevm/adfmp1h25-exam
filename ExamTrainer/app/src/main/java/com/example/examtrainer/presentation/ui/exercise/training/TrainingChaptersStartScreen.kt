@@ -1,4 +1,4 @@
-package com.example.examtrainer.presentation.ui.exercise.exam
+package com.example.examtrainer.presentation.ui.exercise.training
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,16 +17,27 @@ import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.CommonHeader
 import com.example.examtrainer.presentation.ui.exercise.StartExerciseInfoBox
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
-import com.example.examtrainer.presentation.viewmodel.exercise.ExamViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.TrainingTOCViewModel
+import com.example.examtrainer.presentation.viewmodel.exercise.TrainingViewModel
 
 @Composable
-fun ExamStartScreen(navController: NavController) {
-    val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.EXAM_ROOT)
-    val viewModel: ExamViewModel = hiltViewModel(backStackEntry)
+fun TrainingChaptersStartScreen(navController: NavController) {
+    val backStackEntry = rememberRootBackStackEntry(navController, NavRoutes.TRAINING_ROOT)
+    val tocViewModel: TrainingTOCViewModel = hiltViewModel(backStackEntry)
+    val viewModel: TrainingViewModel = hiltViewModel(backStackEntry)
 
-    val currentExam by viewModel.currentExam.collectAsState()
+    val chapterQuestions by tocViewModel.chapterQuestions.collectAsState()
+    val currentChapterIdx by tocViewModel.currentChapterIdx.collectAsState()
 
-    val amountOfQuestions: Int = viewModel.questions.collectAsState().value.size
+    var currentChapter: String = "Название темы"
+    var amountOfChapterQuestions: Int = 0
+
+    if (currentChapterIdx >= 0) {
+        currentChapter = chapterQuestions[currentChapterIdx].title
+        val questions = chapterQuestions[currentChapterIdx].questions
+        amountOfChapterQuestions = questions.size
+        viewModel.loadQuestions(questions)
+    }
 
     Column(
         modifier = Modifier
@@ -44,16 +55,16 @@ fun ExamStartScreen(navController: NavController) {
         )
 
         StartExerciseInfoBox(
-            headerText = "Экзамен",
+            headerText = "Тренировка по теме “$currentChapter”",
             infoText =
             """
-                Вам будет предложено $amountOfQuestions вопросов по всему курсу “$currentExam”.
+                Вам будет предложено $amountOfChapterQuestions вопросов по теме “$currentChapter”.
                 
-                В ходе решения экзамена Вы не сможете получить подсказку по вопросу или посмотреть результат своего ответа.
+                В ходе решения экзамена Вы сможете получить подсказку по вопросу и посмотреть результат своего ответа.
             """.trimIndent(),
             onStart = {
                 viewModel.startExercise()
-                navController.navigate(NavRoutes.EXAM_QUESTION) {
+                navController.navigate(NavRoutes.TRAINING_QUESTION) {
                     launchSingleTop = true
                     restoreState = true
                 }
