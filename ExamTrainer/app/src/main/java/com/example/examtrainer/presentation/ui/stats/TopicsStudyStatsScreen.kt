@@ -150,6 +150,7 @@ fun STOC(
     ) {
         items(items = sortedTopics, key = { it.name }) { topic ->
             val backgroundColor = when {
+                maxProgress == minProgress -> MaterialTheme.colorScheme.background
                 topic.progress == maxProgress -> MaterialTheme.colorScheme.primaryContainer
                 topic.progress == minProgress -> MaterialTheme.colorScheme.errorContainer
                 else -> MaterialTheme.colorScheme.background
