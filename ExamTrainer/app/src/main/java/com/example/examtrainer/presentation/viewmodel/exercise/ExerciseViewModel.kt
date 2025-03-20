@@ -115,6 +115,14 @@ abstract class ExerciseViewModel : ViewModel() {
         }
     }
 
+    open fun prevQuestion() {
+        if (_currentIndex.value > 0) {
+            _currentIndex.value -= 1
+            _selectedAnswer.value = null
+            _isAnswerConfirmed.value = false
+        }
+    }
+
     override fun onCleared() {
         _appLifecycleObserver.removeObserver()
     }

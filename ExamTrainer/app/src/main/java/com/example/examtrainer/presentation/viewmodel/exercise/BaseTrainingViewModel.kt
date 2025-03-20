@@ -21,4 +21,9 @@ abstract class BaseTrainingViewModel : ExerciseViewModel() {
         super.nextQuestion()
         _isHintUsed.value = false
     }
+
+    override fun prevQuestion() {
+        super.prevQuestion()
+        _isHintUsed.value = false
+    }
 }
