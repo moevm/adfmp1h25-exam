@@ -84,7 +84,7 @@ fun ExamQuestionScreen(navController: NavController) {
     if (showDialog) {
         ConfirmExitDialog(
             titleText = "Внимание",
-            text = "Вы уверенны что хотите закончить экзамен?",
+            text = "Вы уверены что хотите закончить экзамен?",
             onDismiss = {
                 showDialog = false
                 viewModel.resumeExercise()

@@ -34,20 +34,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.FactCheck
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.examtrainer.presentation.navigation.NavRoutes
 import com.example.examtrainer.presentation.ui.exercise.AnswersVariants
 import com.example.examtrainer.presentation.ui.exercise.ConfirmButton
 import com.example.examtrainer.presentation.ui.exercise.ConfirmExitDialog
 import com.example.examtrainer.presentation.ui.exercise.HintComponent
-import com.example.examtrainer.presentation.ui.exercise.NextButton
+import com.example.examtrainer.presentation.ui.exercise.TrainingButton
 import com.example.examtrainer.presentation.ui.rememberRootBackStackEntry
 import com.example.examtrainer.presentation.viewmodel.exercise.TrainingViewModel
 import java.util.Locale
@@ -75,11 +77,17 @@ fun TrainingQuestionScreen(navController: NavController) {
     val selectedAnswerColor = MaterialTheme.colorScheme.primaryContainer
     val wrongAnswerColor = MaterialTheme.colorScheme.errorContainer
     val correctAnswerColor = MaterialTheme.colorScheme.surface
+    val questionsHistory by viewModel.questionsHistory.collectAsState()
 
     val buttonBgColor: (String) -> Color = { answer ->
+        val state = questionsHistory[index]?.get(answer)
         when {
-            isAnswerConfirmed && answer == questions[index].correctAnswer -> correctAnswerColor
-            isAnswerConfirmed && answer == selectedAnswer -> wrongAnswerColor
+            isAnswerConfirmed && answer == questions[index].correctAnswer ||
+                    state == TrainingViewModel.AnswerState.Correct
+                -> correctAnswerColor
+            isAnswerConfirmed && answer == selectedAnswer ||
+                    state == TrainingViewModel.AnswerState.Wrong
+                -> wrongAnswerColor
             !isAnswerConfirmed && answer == selectedAnswer -> selectedAnswerColor
             else -> defaultAnswerColor
         }
@@ -88,7 +96,7 @@ fun TrainingQuestionScreen(navController: NavController) {
     if (showDialog) {
         ConfirmExitDialog(
             titleText = "Внимание",
-            text = "Вы уверенны что хотите закончить тренировку?",
+            text = "Вы уверены что хотите закончить тренировку?",
             onDismiss = {
                 showDialog = false
                 viewModel.resumeExercise()
@@ -145,7 +153,8 @@ fun TrainingQuestionScreen(navController: NavController) {
                 AnswersVariants(
                     answers = questions[index].answers,
                     onSelectAnswer = { answer -> viewModel.selectAnswer(answer) },
-                    buttonBgColor = buttonBgColor
+                    buttonBgColor = buttonBgColor,
+                    interactable = !questionsHistory.containsKey(index),
                 )
 
                 HintComponent(questions[index].hint, isHintUsed)
@@ -154,29 +163,43 @@ fun TrainingQuestionScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        if (isAnswerConfirmed) {
-            NextButton(
-                text = "Далее",
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            TrainingButton(
+                icon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = {
-                    if (index < questions.size - 1)
+                    viewModel.prevQuestion()
+                },
+                enabled = index != 0,
+            )
+            ConfirmButton(
+                text = "Подтвердить",
+                enabled = !isAnswerConfirmed && selectedAnswer != null,
+                onClick = {
+                    viewModel.confirmAnswer()
+                }
+            )
+            if (index != questions.size - 1) {
+                TrainingButton(
+                    icon = Icons.AutoMirrored.Filled.ArrowForward,
+                    onClick = {
                         viewModel.nextQuestion()
-                    else {
+                    },
+                )
+            } else {
+                TrainingButton(
+                    icon = Icons.AutoMirrored.Filled.FactCheck,
+                    onClick = {
                         viewModel.stopExercise()
                         navController.navigate(NavRoutes.TRAINING_RESULT, {
                             launchSingleTop = true
                             restoreState = true
                         })
-                    }
-                }
-            )
-        } else {
-            ConfirmButton(
-                text = "Подтвердить",
-                enabled = selectedAnswer != null,
-                onClick = {
-                    viewModel.confirmAnswer()
-                }
-            )
+                    },
+                )
+            }
         }
     }
 }
@@ -286,7 +309,7 @@ fun QuestionComponent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top=10.dp, start = 10.dp),
+                .padding(top = 10.dp, start = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -309,7 +332,7 @@ fun QuestionComponent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom=10.dp, end = 10.dp),
+                .padding(bottom = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
